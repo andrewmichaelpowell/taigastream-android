@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Zoeken</string>
+    <string name="cancel">Annuleren</string>
+    <string name="save">Bewaar</string>
+    <string name="clear">Wis</string>
+    <string name="enter_url">URL invoeren</string>
+    <string name="no_results">Geen resultaten</string>
+    <string name="more_results">Meer resultaten</string>
+    <string name="stream_title">Stream %1$d</string>
+    <string name="move_up">Omhoog verplaatsen</string>
+    <string name="move_down">Omlaag verplaatsen</string>
+</resources>

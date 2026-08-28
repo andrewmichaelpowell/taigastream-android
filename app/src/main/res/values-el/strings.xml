@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Αναζήτηση</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="save">Αποθήκευση</string>
+    <string name="clear">Εκκαθάριση</string>
+    <string name="enter_url">Εισαγάγετε URL</string>
+    <string name="no_results">Δεν βρέθηκαν αποτελέσματα</string>
+    <string name="more_results">Περισσότερα αποτελέσματα</string>
+    <string name="stream_title">Ροή %1$d</string>
+    <string name="move_up">Μετακίνηση επάνω</string>
+    <string name="move_down">Μετακίνηση κάτω</string>
+</resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Caută</string>
+    <string name="cancel">Anulează</string>
+    <string name="save">Salvează</string>
+    <string name="clear">Șterge</string>
+    <string name="enter_url">Introduceți URL-ul</string>
+    <string name="no_results">Niciun rezultat</string>
+    <string name="more_results">Mai multe rezultate</string>
+    <string name="stream_title">Flux %1$d</string>
+    <string name="move_up">Mutare în sus</string>
+    <string name="move_down">Mutare în jos</string>
+</resources>

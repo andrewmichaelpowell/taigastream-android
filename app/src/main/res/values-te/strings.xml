@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">వెతుకు</string>
+    <string name="cancel">రద్దు చేయి</string>
+    <string name="save">సేవ్ చేయి</string>
+    <string name="clear">తొలగించు</string>
+    <string name="enter_url">URL నమోదు చేయండి</string>
+    <string name="no_results">ఫలితాలు లేవు</string>
+    <string name="more_results">మరిన్ని ఫలితాలు</string>
+    <string name="stream_title">ప్రవాహం %1$d</string>
+    <string name="move_up">పైకి తరలించు</string>
+    <string name="move_down">కిందకి తరలించు</string>
+</resources>

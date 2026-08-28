@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">தேடு</string>
+    <string name="cancel">ரத்து செய்</string>
+    <string name="save">சேமி</string>
+    <string name="clear">அழி</string>
+    <string name="enter_url">URL ஐ உள்ளிடுக</string>
+    <string name="no_results">முடிவுகள் இல்லை</string>
+    <string name="more_results">மேலும் முடிவுகள்</string>
+    <string name="stream_title">ஓடை %1$d</string>
+    <string name="move_up">மேலே நகர்த்து</string>
+    <string name="move_down">கீழே நகர்த்து</string>
+</resources>

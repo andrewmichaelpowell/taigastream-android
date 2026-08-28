@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">تلاش</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="save">محفوظ کریں</string>
+    <string name="clear">صاف کریں</string>
+    <string name="enter_url">URL درج کریں</string>
+    <string name="no_results">کوئی نتائج نہیں</string>
+    <string name="more_results">مزید نتائج</string>
+    <string name="stream_title">سٹریم %1$d</string>
+    <string name="move_up">اوپر منتقل کریں</string>
+    <string name="move_down">نیچے منتقل کریں</string>
+</resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Tìm kiếm</string>
+    <string name="cancel">Hủy</string>
+    <string name="save">Lưu</string>
+    <string name="clear">Xóa</string>
+    <string name="enter_url">Nhập URL</string>
+    <string name="no_results">Không có kết quả</string>
+    <string name="more_results">Thêm kết quả</string>
+    <string name="stream_title">Luồng %1$d</string>
+    <string name="move_up">Di chuyển lên</string>
+    <string name="move_down">Di chuyển xuống</string>
+</resources>

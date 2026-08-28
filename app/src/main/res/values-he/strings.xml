@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">חפש</string>
+    <string name="cancel">ביטול</string>
+    <string name="save">שמור</string>
+    <string name="clear">נקה</string>
+    <string name="enter_url">הזן כתובת אינטרנט</string>
+    <string name="no_results">אין תוצאות</string>
+    <string name="more_results">תוצאות נוספות</string>
+    <string name="stream_title">זרם %1$d</string>
+    <string name="move_up">הזז למעלה</string>
+    <string name="move_down">הזז למטה</string>
+</resources>

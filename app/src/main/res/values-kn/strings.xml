@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">ಹುಡುಕಿ</string>
+    <string name="cancel">ರದ್ದುಮಾಡಿ</string>
+    <string name="save">ಉಳಿಸಿ</string>
+    <string name="clear">ಅಳಿಸಿ</string>
+    <string name="enter_url">URL ನಮೂದಿಸಿ</string>
+    <string name="no_results">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ</string>
+    <string name="more_results">ಇನ್ನಷ್ಟು ಫಲಿತಾಂಶಗಳು</string>
+    <string name="stream_title">ಸ್ಟ್ರೀಮ್ %1$d</string>
+    <string name="move_up">ಮೇಲಕ್ಕೆ ಸರಿಸಿ</string>
+    <string name="move_down">ಕೆಳಕ್ಕೆ ಸರಿಸಿ</string>
+</resources>

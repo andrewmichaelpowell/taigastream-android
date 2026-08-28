@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Suchen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="clear">Leeren</string>
+    <string name="enter_url">URL eingeben</string>
+    <string name="no_results">Keine Ergebnisse</string>
+    <string name="more_results">Weitere Ergebnisse</string>
+    <string name="stream_title">Stream %1$d</string>
+    <string name="move_up">Nach oben verschieben</string>
+    <string name="move_down">Nach unten verschieben</string>
+</resources>

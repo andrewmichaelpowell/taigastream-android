@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">بحث</string>
+    <string name="cancel">إلغاء</string>
+    <string name="save">حفظ</string>
+    <string name="clear">مسح</string>
+    <string name="enter_url">أدخل عنوان الويب</string>
+    <string name="no_results">لا توجد نتائج</string>
+    <string name="more_results">نتائج إضافية</string>
+    <string name="stream_title">البث %1$d</string>
+    <string name="move_up">نقل للأعلى</string>
+    <string name="move_down">نقل للأسفل</string>
+</resources>

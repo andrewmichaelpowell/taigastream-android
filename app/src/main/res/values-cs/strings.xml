@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Hledat</string>
+    <string name="cancel">Zrušit</string>
+    <string name="save">Uložit</string>
+    <string name="clear">Vymazat</string>
+    <string name="enter_url">Zadejte URL</string>
+    <string name="no_results">Žádné výsledky</string>
+    <string name="more_results">Další výsledky</string>
+    <string name="stream_title">Stream %1$d</string>
+    <string name="move_up">Přesunout nahoru</string>
+    <string name="move_down">Přesunout dolů</string>
+</resources>

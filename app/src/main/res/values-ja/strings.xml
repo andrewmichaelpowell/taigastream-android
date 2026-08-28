@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">検索</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
+    <string name="clear">消去</string>
+    <string name="enter_url">URLを入力</string>
+    <string name="no_results">結果がありません</string>
+    <string name="more_results">さらに表示</string>
+    <string name="stream_title">ストリーム %1$d</string>
+    <string name="move_up">上に移動</string>
+    <string name="move_down">下に移動</string>
+</resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">ਖੋਜੋ</string>
+    <string name="cancel">ਰੱਦ ਕਰੋ</string>
+    <string name="save">ਸੰਭਾਲੋ</string>
+    <string name="clear">ਸਾਫ਼ ਕਰੋ</string>
+    <string name="enter_url">URL ਦਰਜ ਕਰੋ</string>
+    <string name="no_results">ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ</string>
+    <string name="more_results">ਹੋਰ ਨਤੀਜੇ</string>
+    <string name="stream_title">ਸਟ੍ਰੀਮ %1$d</string>
+    <string name="move_up">ਉੱਪਰ ਲਿਜਾਓ</string>
+    <string name="move_down">ਹੇਠਾਂ ਲਿਜਾਓ</string>
+</resources>

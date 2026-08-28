@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">തിരയുക</string>
+    <string name="cancel">റദ്ദാക്കുക</string>
+    <string name="save">സംരക്ഷിക്കുക</string>
+    <string name="clear">മായ്ക്കുക</string>
+    <string name="enter_url">URL നൽകുക</string>
+    <string name="no_results">ഫലങ്ങളൊന്നുമില്ല</string>
+    <string name="more_results">കൂടുതൽ ഫലങ്ങൾ</string>
+    <string name="stream_title">സ്ട്രീം %1$d</string>
+    <string name="move_up">മുകളിലേക്ക് നീക്കുക</string>
+    <string name="move_down">താഴേക്ക് നീക്കുക</string>
+</resources>

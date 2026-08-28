@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Cerca</string>
+    <string name="cancel">Cancel·la</string>
+    <string name="save">Desa</string>
+    <string name="clear">Esborra</string>
+    <string name="enter_url">Introduïu l\'URL</string>
+    <string name="no_results">Sense resultats</string>
+    <string name="more_results">Més resultats</string>
+    <string name="stream_title">Flux %1$d</string>
+    <string name="move_up">Mou amunt</string>
+    <string name="move_down">Mou avall</string>
+</resources>

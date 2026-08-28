@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Keresés</string>
+    <string name="cancel">Mégse</string>
+    <string name="save">Mentés</string>
+    <string name="clear">Töröl</string>
+    <string name="enter_url">URL megadása</string>
+    <string name="no_results">Nincs találat</string>
+    <string name="more_results">További találatok</string>
+    <string name="stream_title">Folyam %1$d</string>
+    <string name="move_up">Mozgatás felfelé</string>
+    <string name="move_down">Mozgatás lefelé</string>
+</resources>

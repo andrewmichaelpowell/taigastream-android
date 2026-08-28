@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Ara</string>
+    <string name="cancel">İptal</string>
+    <string name="save">Kaydet</string>
+    <string name="clear">Temizle</string>
+    <string name="enter_url">URL girin</string>
+    <string name="no_results">Sonuç yok</string>
+    <string name="more_results">Daha fazla sonuç</string>
+    <string name="stream_title">Akışı %1$d</string>
+    <string name="move_up">Yukarı taşı</string>
+    <string name="move_down">Aşağı taşı</string>
+</resources>

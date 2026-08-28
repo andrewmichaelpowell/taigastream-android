@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Пошук</string>
+    <string name="cancel">Скасувати</string>
+    <string name="save">Зберегти</string>
+    <string name="clear">Очистити</string>
+    <string name="enter_url">Введіть URL</string>
+    <string name="no_results">Немає результатів</string>
+    <string name="more_results">Більше результатів</string>
+    <string name="stream_title">Потік %1$d</string>
+    <string name="move_up">Перемістити вгору</string>
+    <string name="move_down">Перемістити вниз</string>
+</resources>

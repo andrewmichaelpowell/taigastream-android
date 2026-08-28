@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Rechercher</string>
+    <string name="cancel">Annuler</string>
+    <string name="save">Enregistrer</string>
+    <string name="clear">Effacer</string>
+    <string name="enter_url">Saisir l’URL</string>
+    <string name="no_results">Aucun résultat</string>
+    <string name="more_results">Plus de résultats</string>
+    <string name="stream_title">Flux %1$d</string>
+    <string name="move_up">Déplacer vers le haut</string>
+    <string name="move_down">Déplacer vers le bas</string>
+</resources>

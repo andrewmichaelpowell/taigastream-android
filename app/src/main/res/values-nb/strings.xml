@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Søk</string>
+    <string name="cancel">Avbryt</string>
+    <string name="save">Lagre</string>
+    <string name="clear">Tøm</string>
+    <string name="enter_url">Skriv inn URL</string>
+    <string name="no_results">Ingen resultater</string>
+    <string name="more_results">Flere resultater</string>
+    <string name="stream_title">Strøm %1$d</string>
+    <string name="move_up">Flytt opp</string>
+    <string name="move_down">Flytt ned</string>
+</resources>

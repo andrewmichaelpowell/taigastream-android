@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">ଖୋଜନ୍ତୁ</string>
+    <string name="cancel">ବାତିଲ କରନ୍ତୁ</string>
+    <string name="save">ସଂରକ୍ଷଣ କରନ୍ତୁ</string>
+    <string name="clear">ସଫା କରନ୍ତୁ</string>
+    <string name="enter_url">URL ଭରନ୍ତୁ</string>
+    <string name="no_results">କୌଣସି ଫଳାଫଳ ନାହିଁ</string>
+    <string name="more_results">ଅଧିକ ଫଳାଫଳ</string>
+    <string name="stream_title">ଷ୍ଟ୍ରିମ୍ %1$d</string>
+    <string name="move_up">ଉପରକୁ ଘୁଞ୍ଚାନ୍ତୁ</string>
+    <string name="move_down">ତଳକୁ ଘୁଞ୍ଚାନ୍ତୁ</string>
+</resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">অনুসন্ধান</string>
+    <string name="cancel">বাতিল</string>
+    <string name="save">সংরক্ষণ করুন</string>
+    <string name="clear">মুছে ফেলুন</string>
+    <string name="enter_url">ওয়েব ঠিকানা লিখুন</string>
+    <string name="no_results">কোনো ফলাফল পাওয়া যায়নি</string>
+    <string name="more_results">আরও ফলাফল</string>
+    <string name="stream_title">স্ট্রিম %1$d</string>
+    <string name="move_up">উপরে সরান</string>
+    <string name="move_down">নিচে সরান</string>
+</resources>

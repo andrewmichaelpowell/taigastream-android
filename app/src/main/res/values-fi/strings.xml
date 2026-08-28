@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Hae</string>
+    <string name="cancel">Peruuta</string>
+    <string name="save">Tallenna</string>
+    <string name="clear">Tyhjennä</string>
+    <string name="enter_url">Anna URL</string>
+    <string name="no_results">Ei tuloksia</string>
+    <string name="more_results">Lisää tuloksia</string>
+    <string name="stream_title">Virta %1$d</string>
+    <string name="move_up">Siirrä ylös</string>
+    <string name="move_down">Siirrä alas</string>
+</resources>

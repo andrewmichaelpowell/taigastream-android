@@ -1,0 +1,12 @@
+<resources>
+    <string name="search">Cari</string>
+    <string name="cancel">Batal</string>
+    <string name="save">Simpan</string>
+    <string name="clear">Hapus</string>
+    <string name="enter_url">Masukkan URL</string>
+    <string name="no_results">Tidak ada hasil</string>
+    <string name="more_results">Hasil lainnya</string>
+    <string name="stream_title">Aliran %1$d</string>
+    <string name="move_up">Pindahkan ke atas</string>
+    <string name="move_down">Pindahkan ke bawah</string>
+</resources>
