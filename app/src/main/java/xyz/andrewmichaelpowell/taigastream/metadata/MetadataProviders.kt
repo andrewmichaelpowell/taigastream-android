@@ -19,6 +19,7 @@ import xyz.andrewmichaelpowell.taigastream.metadata.providers.SomaFmProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.StarFmProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.SverigesRadioProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.VirginRadioFranceProvider
+import xyz.andrewmichaelpowell.taigastream.metadata.providers.VirginRadioItalyProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.VirginRadioOmanProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.VirginRadioRomaniaProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.VrtRadioProvider
@@ -39,6 +40,7 @@ object MetadataProviders {
         VirginRadioFranceProvider(),
         VirginRadioRomaniaProvider(),
         VirginRadioOmanProvider(),
+        VirginRadioItalyProvider(),
         ZenoFmProvider(),
         VrtRadioProvider(),
         DeutschlandfunkProvider(),
