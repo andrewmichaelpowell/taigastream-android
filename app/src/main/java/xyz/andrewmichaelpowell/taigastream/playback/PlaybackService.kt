@@ -10,10 +10,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
 import android.media.AudioManager
 import android.os.Handler
 import android.os.Looper
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.content.ContextCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -47,6 +49,7 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProviders
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.IcecastProvider
 import kotlin.time.Duration.Companion.milliseconds
+import androidx.core.graphics.createBitmap
 
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 class PlaybackService : MediaSessionService() {
@@ -290,8 +293,14 @@ class PlaybackService : MediaSessionService() {
 
     private fun appIconBitmap(): Bitmap? =
         runCatching {
-            val drawable = packageManager.getApplicationIcon(packageName)
-            drawable.toBitmap()
+            val drawable = ContextCompat.getDrawable(this, R.mipmap.ic_launcher)!!
+            val size = 512
+            createBitmap(size, size).also { bitmap ->
+                val canvas = Canvas(bitmap)
+                canvas.drawColor(Color.WHITE)
+                drawable.setBounds(0, 0, size, size)
+                drawable.draw(canvas)
+            }
         }.getOrNull() ?: runCatching {
             BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
         }.getOrNull()
