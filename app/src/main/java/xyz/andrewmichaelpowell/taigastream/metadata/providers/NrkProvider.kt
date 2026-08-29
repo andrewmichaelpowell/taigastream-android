@@ -5,12 +5,10 @@ package xyz.andrewmichaelpowell.taigastream.metadata.providers
 
 import okhttp3.HttpUrl
 import org.json.JSONArray
-import org.json.JSONObject
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `NRKProvider`. */
 class NrkProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

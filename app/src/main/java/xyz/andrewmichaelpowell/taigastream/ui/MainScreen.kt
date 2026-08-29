@@ -50,7 +50,6 @@ private sealed interface SheetState {
     data class ManualEntry(val index: Int, val name: String, val url: String) : SheetState
 }
 
-/** Ports `MainView` (MainView.swift:9-41): the list of 32 station preset slots. */
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current

@@ -51,7 +51,6 @@ import xyz.andrewmichaelpowell.taigastream.ui.theme.LocalTaigaStreamColors
 
 private const val PAGE_SIZE = 50
 
-/** Ports `RadioBrowserSearchSheet` (MainView.swift:265-428). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RadioBrowserSearchSheet(onDismiss: () -> Unit, onSelect: (RadioBrowserStation) -> Unit) {

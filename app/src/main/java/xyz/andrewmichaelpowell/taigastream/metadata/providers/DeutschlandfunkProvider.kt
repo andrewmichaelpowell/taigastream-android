@@ -10,7 +10,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `DeutschlandfunkProvider` — Nova (JSON playlist) and Kultur (plain text) API styles. */
 class DeutschlandfunkProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

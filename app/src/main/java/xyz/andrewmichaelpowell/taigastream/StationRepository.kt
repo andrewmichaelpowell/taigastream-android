@@ -19,12 +19,6 @@ import kotlinx.coroutines.flow.stateIn
 
 private val Context.stationDataStore by preferencesDataStore(name = "stations")
 
-/**
- * Local (DataStore-backed) store for the 32 station preset slots. This mirrors the shape of the
- * iOS app's `NSUbiquitousKeyValueStore`-backed `StreamInfo.stations`/`saveStation`/`moveStation`
- * (Taiga Stream Widget/WidgetView.swift), but purely on-device — this is the intended seam for a
- * future Google-account cloud sync layer (Drive appDataFolder or Firebase) to slot in behind.
- */
 class StationRepository private constructor(private val appContext: Context) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -33,9 +27,6 @@ class StationRepository private constructor(private val appContext: Context) {
         .stateIn(
             scope,
             SharingStarted.Eagerly,
-            // Each placeholder needs its own id — reusing RadioStation.EMPTY here would give all
-            // 32 initial slots the same id, which crashes the LazyColumn on first composition
-            // (duplicate keys) before the real DataStore-backed emission arrives.
             List(RadioStation.SLOT_COUNT) { RadioStation.EMPTY.copy(id = UUID.randomUUID()) },
         )
 

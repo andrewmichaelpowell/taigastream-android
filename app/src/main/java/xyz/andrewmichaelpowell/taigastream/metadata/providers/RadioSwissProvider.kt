@@ -9,7 +9,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `RadioSwissProvider` (Radio Swiss Pop/Jazz/Classic). */
 class RadioSwissProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

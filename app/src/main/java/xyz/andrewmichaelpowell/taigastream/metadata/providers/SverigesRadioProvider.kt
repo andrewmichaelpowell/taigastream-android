@@ -10,7 +10,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `SverigesRadioProvider` (Swedish public radio). */
 class SverigesRadioProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

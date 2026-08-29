@@ -20,14 +20,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import xyz.andrewmichaelpowell.taigastream.ui.theme.LocalTaigaStreamColors
 
-/**
- * Ports `FaviconView`/`RadioBrowserResultRow`'s favicon loading (MainView.swift:43-101, 430-509).
- * No background box behind the image — many favicons have transparent backgrounds and are meant
- * to sit directly on the app background, same as iOS. An empty [faviconUrl] or a load failure
- * falls back to an antenna glyph, tinted like the play button's slot number: full label color when
- * [isConfigured] (the station just lacks a favicon), dimmer quaternary color when the slot itself
- * is empty.
- */
 @Composable
 fun FaviconImage(faviconUrl: String, isConfigured: Boolean, size: Dp = 36.dp) {
     val colors = LocalTaigaStreamColors.current

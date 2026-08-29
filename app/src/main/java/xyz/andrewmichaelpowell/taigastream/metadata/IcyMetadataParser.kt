@@ -3,17 +3,6 @@
 
 package xyz.andrewmichaelpowell.taigastream.metadata
 
-/**
- * Ports `StreamInfo.parseMetadata` (Taiga Stream Widget/WidgetView.swift:2455-2636) — the
- * heuristics applied to a raw in-band ICY `StreamTitle` blob (as opposed to the structured JSON
- * each network-specific [MetadataProvider] returns). Used only as the fallback path when no
- * specific provider recognizes a station, i.e. self-hosted Icecast/Shoutcast stations.
- *
- * iOS receives this text via `AVMetadataItem`s keyed by `.commonKeyTitle`/`.commonKeyArtist`;
- * Media3 exposes the same raw ICY `StreamTitle` string through `IcyInfo.title`, with no separate
- * artist field, so [rawArtist] is normally null here but kept for parity with the original
- * two-field logic.
- */
 object IcyMetadataParser {
 
     private val textFieldPattern = Regex("text=\"([^\"]*)\"")

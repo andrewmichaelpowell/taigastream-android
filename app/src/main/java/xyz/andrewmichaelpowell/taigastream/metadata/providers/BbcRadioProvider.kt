@@ -9,7 +9,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `BBCRadioProvider`. */
 class BbcRadioProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

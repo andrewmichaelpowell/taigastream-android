@@ -17,7 +17,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `VRTRadioProvider` (VRT MAX, Belgium) — a GraphQL POST against the VRT NU public API. */
 class VrtRadioProvider : MetadataProvider {
     override val pollInterval: Long = 30
 

@@ -24,12 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import xyz.andrewmichaelpowell.taigastream.ui.theme.LocalTaigaStreamColors
 
-/**
- * Shared iOS-style sheet row button: a solid [secondarySystemBackground][xyz.andrewmichaelpowell.taigastream.ui.theme.TaigaStreamColors.secondarySystemBackground]
- * pill, matching every action row in `StreamOptionsSheet` on iOS. Used across
- * [StationOptionsSheet], [ManualUrlSheet], and [RadioBrowserSearchSheet] so every sheet's buttons
- * share one look.
- */
 @Composable
 fun OptionButton(
     modifier: Modifier = Modifier,
@@ -76,12 +70,6 @@ fun OptionButton(
     }
 }
 
-/**
- * Shared iOS-style sheet text field: a filled, borderless [RoundedCornerShape] matching
- * [OptionButton]'s pill, so every input on a sheet looks like every button on that sheet (as on
- * iOS, where both are `secondarySystemBackground` rows). Used by [ManualUrlSheet] and
- * [RadioBrowserSearchSheet].
- */
 @Composable
 fun TaigaTextField(
     value: String,

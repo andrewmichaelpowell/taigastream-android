@@ -20,11 +20,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/**
- * Ports `VirginRadioFranceProvider`. The station's on-air API only responds correctly after a
- * cookie has been established by first hitting the homepage, so this uses an ephemeral,
- * per-poll cookie jar — same as the iOS version's `URLSessionConfiguration.ephemeral` session.
- */
 class VirginRadioFranceProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

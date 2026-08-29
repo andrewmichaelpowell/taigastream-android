@@ -10,7 +10,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `VirginRadioOmanProvider` — parses a JSONP-ish "played" feed with a query-string payload. */
 class VirginRadioOmanProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

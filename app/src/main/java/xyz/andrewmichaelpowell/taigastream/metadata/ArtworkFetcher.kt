@@ -8,15 +8,6 @@ import android.graphics.BitmapFactory
 import java.net.URLEncoder
 import org.json.JSONObject
 
-/**
- * Resolves now-playing artwork, porting `fetchArtwork`/`applyArtwork`
- * (Taiga Stream Widget/WidgetView.swift:2640-2718). A few iOS providers (RTL, NRK, ABC, RTE,
- * Cesky Rozhlas, Virgin Radio France) fetch their own station-supplied cover art *and* the shared
- * iTunes Search fallback runs unconditionally afterwards for every provider, racing to overwrite
- * whichever image lands second. Here a provider's own [MetadataResult.artworkUrl] is used when
- * present and the iTunes lookup only runs as a fallback when it isn't — same artwork sources,
- * without the redundant network call/race.
- */
 object ArtworkFetcher {
 
     fun resolve(

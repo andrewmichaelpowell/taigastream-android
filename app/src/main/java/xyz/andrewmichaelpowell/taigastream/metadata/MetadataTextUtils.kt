@@ -3,13 +3,6 @@
 
 package xyz.andrewmichaelpowell.taigastream.metadata
 
-/**
- * Ports `cleanMetadataString`/`junkMetadata`/`splitArtistTitle` from `StreamInfo`
- * (Taiga Stream Widget/WidgetView.swift:2338-2451). These are shared by nearly every provider to
- * strip hosting-platform noise (ISRC suffixes, bracketed codes, "visit us at ..." prefixes) and to
- * reject metadata blobs that are clearly not a real artist/title (raw query strings, ad markers,
- * template placeholders like `zc123` or `song_spot=`).
- */
 object MetadataTextUtils {
 
     private val hostedPlatformPrefixPattern =
@@ -66,7 +59,6 @@ object MetadataTextUtils {
 
     private val separators = listOf(" — ", " – ", " - ", " / ", " · ", " | ")
 
-    /** Returns (artist, title); artist is empty when no separator split cleanly. */
     fun splitArtistTitle(raw: String): Pair<String, String> {
         for (separator in separators) {
             val parts = raw.split(separator)

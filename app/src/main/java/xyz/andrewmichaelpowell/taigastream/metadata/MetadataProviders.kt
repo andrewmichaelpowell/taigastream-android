@@ -24,12 +24,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.providers.VirginRadioRomania
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.VrtRadioProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.ZenoFmProvider
 
-/**
- * The provider list and its order, ported from `StreamInfo.metadataProviders`
- * (Taiga Stream Widget/WidgetView.swift:2059-2079). Order matters: [IcecastProvider] matches every
- * URL, so it must stay last — it's the fallback for stations none of the network-specific
- * providers recognize.
- */
 object MetadataProviders {
     val all: List<MetadataProvider> = listOf(
         AudioAddictProvider(),

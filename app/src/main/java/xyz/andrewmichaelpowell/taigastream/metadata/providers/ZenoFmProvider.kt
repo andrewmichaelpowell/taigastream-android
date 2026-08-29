@@ -16,14 +16,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/**
- * Ports `ZenoFMProvider` — a long-lived server-sent-events style subscription
- * (Taiga Stream Widget/WidgetView.swift:1372-1498). The iOS version also declares a 30s
- * [pollInterval], which causes `StreamInfo` to open an *additional* overlapping SSE connection
- * every 30 seconds on top of the one already streaming (WidgetView.swift:2283-2288) — a stray
- * connection leak rather than intentional behavior. Here [pollInterval] is `null`: one persistent
- * connection is opened and explicitly torn down via [cancel] when the stream changes.
- */
 class ZenoFmProvider : MetadataProvider {
     override val pollInterval: Long? = null
 
@@ -67,8 +59,7 @@ class ZenoFmProvider : MetadataProvider {
                                 eventLines.append(line).append('\n')
                             }
                         }
-                    } catch (e: IOException) {
-                        // Connection closed or cancelled; nothing to clean up.
+                    } catch (_: IOException) {
                     }
                 }
             }

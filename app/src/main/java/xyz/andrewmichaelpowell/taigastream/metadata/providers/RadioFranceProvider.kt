@@ -17,13 +17,8 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
+import kotlin.time.Duration.Companion.milliseconds
 
-/**
- * Ports `RadioFranceProvider`. This API tells the client how long to wait before polling again
- * (`delayToRefresh`), so instead of a fixed [pollInterval] the provider reschedules itself — the
- * reschedule is fired off independently of parsing the *current* response, matching the iOS
- * version's fire-and-forget `DispatchQueue.main.asyncAfter` (WidgetView.swift:739-753).
- */
 class RadioFranceProvider : MetadataProvider {
     override val pollInterval: Long? = null
 
@@ -56,7 +51,7 @@ class RadioFranceProvider : MetadataProvider {
         if (json.has("delayToRefresh")) {
             val intervalSeconds = maxOf(json.optDouble("delayToRefresh") / 1000.0, 10.0)
             scope.launch {
-                delay((intervalSeconds * 1000).toLong())
+                delay((intervalSeconds * 1000).toLong().milliseconds)
                 fetchAndScheduleNext(apiUrl, onResult)
             }
         }
@@ -100,7 +95,7 @@ class RadioFranceProvider : MetadataProvider {
                 val body = response.body.string()
                 JSONObject(body)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }

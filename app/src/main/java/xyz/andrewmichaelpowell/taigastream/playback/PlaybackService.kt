@@ -46,20 +46,8 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProviders
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.IcecastProvider
+import kotlin.time.Duration.Companion.milliseconds
 
-/**
- * Owns playback + the system media session, porting `StreamInfo`/`PlayStream`
- * (Taiga Stream Widget/WidgetView.swift). A few things are simpler here than on iOS:
- *
- * - Audio focus (ducking/pause on interruption) is handled natively by ExoPlayer's
- *   `setAudioAttributes(..., handleAudioFocus = true)`, replacing the 5 manual `AVAudioSession`
- *   notification observers iOS needs (WidgetView.swift:2765-2842).
- * - "Now playing" state is a single in-process `StateFlow` ([NowPlaying]) rather than round-
- *   tripping through an App Group `UserDefaults`, since the widget shares this process.
- * - Playback state changes (buffering stalls, errors) are read directly off ExoPlayer's
- *   `Player.Listener` callbacks instead of iOS's 1-second polling heartbeat
- *   (`startPlaybackHeartbeat`, WidgetView.swift:2844-2855).
- */
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 class PlaybackService : MediaSessionService() {
 
@@ -88,13 +76,6 @@ class PlaybackService : MediaSessionService() {
         super.onCreate()
         repository = StationRepository.get(this)
 
-        // Bare defaults trip up a lot of real internet-radio streams: some CDNs (e.g. Audacy/
-        // Amperwave, iHeartRadio) gate ICY metadata — occasionally playback itself — behind
-        // user-agent sniffing and don't see AVPlayer's default UA as suspicious the way they might
-        // ExoPlayer's; many legacy stream URLs also 302-redirect between http and https, which
-        // Media3 refuses to follow unless explicitly allowed. The explicit Icy-Metadata header is
-        // belt-and-suspenders — ProgressiveMediaSource's IcyDataSource is expected to send it
-        // automatically, but making it explicit removes any doubt.
         val httpDataSourceFactory = DefaultHttpDataSource.Factory()
             .setUserAgent("TaigaStream/1.0")
             .setAllowCrossProtocolRedirects(true)
@@ -123,11 +104,6 @@ class PlaybackService : MediaSessionService() {
             .setCallback(sessionCallback)
             .setSessionActivity(sessionActivity)
             .build()
-        // MediaSessionService only tracks player state (and auto-posts/updates the foreground
-        // notification) for sessions explicitly added here — onGetSession alone just hands the
-        // session to a connecting MediaController, which nothing in this app ever creates (the UI
-        // and widget talk to the service via plain Intents, not a controller). Without this call
-        // the service plays audio fine but never shows a "now playing" notification at all.
         addSession(mediaSession)
 
         registerReceiver(becomingNoisyReceiver, IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY))
@@ -245,7 +221,7 @@ class PlaybackService : MediaSessionService() {
         val interval = provider.pollInterval ?: return
         pollJob = serviceScope.launch {
             while (isActive) {
-                delay(interval * 1000)
+                delay((interval * 1000).milliseconds)
                 provider.poll(streamUrl, onResult)
             }
         }
@@ -333,21 +309,6 @@ class PlaybackService : MediaSessionService() {
                 .setAction(ACTION_PLAY_SLOT)
                 .putExtra(EXTRA_SLOT_INDEX, index)
 
-        fun stopIntent(context: Context): Intent =
-            Intent(context, PlaybackService::class.java).setAction(ACTION_STOP)
-
-        /**
-         * Starts (or messages) the service for a station-slot tap. `Context.startForegroundService`
-         * carries a strict "call `startForeground()` back within a few seconds or the app is
-         * killed" obligation — that mechanism exists specifically to make *background*-triggered
-         * foreground-service starts safe (an alarm, a broadcast, a push notification). Every caller
-         * here is a direct foreground user interaction (a button tap in the visible activity, or a
-         * home-screen widget tap — both are on Android's documented FGS background-start exemption
-         * list already), so plain `startService()` is sufficient and carries no such deadline:
-         * Media3's `MediaSessionService` still promotes itself to a real foreground service (with
-         * notification) once playback actually begins, on its own schedule, without racing a
-         * system-imposed timer tied to this call.
-         */
         fun startPlaySlot(context: Context, index: Int) {
             context.startService(playSlotIntent(context, index))
         }

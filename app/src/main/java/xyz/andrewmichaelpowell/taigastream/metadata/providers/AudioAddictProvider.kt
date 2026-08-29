@@ -9,7 +9,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `AudioAddictProvider` (di.fm, JazzRadio, RockRadio, RadioTunes, ClassicalRadio, ZenRadio). */
 class AudioAddictProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

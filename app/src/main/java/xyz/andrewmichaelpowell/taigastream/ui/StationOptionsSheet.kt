@@ -19,13 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import xyz.andrewmichaelpowell.taigastream.R
 
-/**
- * Ports `StreamOptionsSheet` (MainView.swift:579-652). Reordering here is exposed as explicit
- * "Move up"/"Move down" actions rather than SwiftUI's native `.onMove` drag handles — a live
- * drag-and-drop `LazyColumn` needs either an unstable/experimental Compose API or a third-party
- * library, so this ships the equivalent capability (backed by the same
- * `StationRepository.moveStation`) through a simpler control for v1.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StationOptionsSheet(

@@ -18,6 +18,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
+import kotlin.time.Duration.Companion.milliseconds
 
 data class RadioBrowserStation(
     val id: String,
@@ -32,13 +33,6 @@ data class RadioBrowserStation(
     val bitrate: Int,
 )
 
-/**
- * Ports `RadioBrowserClient` (MainView.swift:116-263), including its mirror-server load-balancing
- * trick: `all.api.radio-browser.info` resolves to every active mirror's IP, and reverse-DNS on
- * each address recovers that mirror's real hostname (`CFHost`/`getnameinfo` on iOS;
- * `InetAddress`'s forward + reverse lookups here) so requests spread across servers instead of
- * hammering one.
- */
 class RadioBrowserClient private constructor() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -61,8 +55,7 @@ class RadioBrowserClient private constructor() {
                     baseUrl = "https://${hostnames.random()}"
                     serverResolved = true
                 }
-            } catch (e: Exception) {
-                // Keep the default baseUrl.
+            } catch (_: Exception) {
             }
         }
     }
@@ -79,7 +72,7 @@ class RadioBrowserClient private constructor() {
     fun search(params: SearchParams, onResult: (List<RadioBrowserStation>) -> Unit) {
         if (!serverResolved) {
             scope.launch {
-                delay(1000)
+                delay(1000.milliseconds)
                 search(params, onResult)
             }
             return

@@ -11,18 +11,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/**
- * Ports `IcecastProvider` — the catch-all fallback that queries an Icecast server's own
- * `status-json.xsl` for its current source title. Must stay last in provider precedence since it
- * matches every stream URL.
- *
- * The iOS version unconditionally forces `https` for this status check, and this originally
- * matched that — but that breaks real stations on shared CDN hosting where the TLS certificate
- * doesn't match the per-customer hostname (confirmed via `lostcoast.streamguys.us`, whose
- * certificate is issued for `*.streamguys1.com`, causing a hostname-verification failure on every
- * request). This tries the stream's own scheme first — matching what's already known to work well
- * enough to serve the audio — and falls back to the other scheme only if that fails.
- */
 class IcecastProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import xyz.andrewmichaelpowell.taigastream.R
 
-/** Ports `ManualURLSheet` (MainView.swift:654-750). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManualUrlSheet(

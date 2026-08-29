@@ -4,13 +4,11 @@
 package xyz.andrewmichaelpowell.taigastream.metadata.providers
 
 import okhttp3.HttpUrl
-import org.json.JSONArray
 import org.json.JSONObject
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `RTERadioProvider` (RTÉ Ireland). */
 class RteRadioProvider : MetadataProvider {
     override val pollInterval: Long = 15
 

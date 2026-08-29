@@ -14,7 +14,6 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataTextUtils
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 
-/** Ports `StarFMProvider` — a live WebSocket feed per station (Star FM / Regenbogen2 network). */
 class StarFmProvider : MetadataProvider {
     override val pollInterval: Long? = null
 
