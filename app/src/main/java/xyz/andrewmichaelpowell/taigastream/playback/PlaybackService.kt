@@ -133,9 +133,6 @@ class PlaybackService : MediaSessionService() {
     }
 
     private fun playSlot(index: Int) {
-        // Checked before the station lookup below: if this slot is already playing, toggle it
-        // off regardless of whether its preset was since cleared — otherwise clearing a station
-        // mid-playback would leave it stuck playing with no way to stop it from this button.
         val current = NowPlaying.state.value
         if (player.isPlaying && current.currentStream == index + 1) {
             player.pause()

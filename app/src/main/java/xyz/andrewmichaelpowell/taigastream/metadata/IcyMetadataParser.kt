@@ -9,7 +9,6 @@ object IcyMetadataParser {
     private val isrcPattern = Regex("^[A-Z][A-Z0-9]{7,11}$")
     private val hyphenSplitPattern = Regex("\\s*-\\s*")
 
-    /** Returns (artist, title); either may be empty when nothing usable was found. */
     fun parse(rawTitle: String?, rawArtist: String? = null, useAggressiveParsing: Boolean = false): Pair<String, String> {
         var artist = ""
         var title = ""
