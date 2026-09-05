@@ -14,6 +14,8 @@ import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 class IcecastProvider : MetadataProvider {
     override val pollInterval: Long = 15
 
+    private val isrcPattern = Regex("^[A-Z][A-Z0-9]{7,11}$")
+
     override fun matches(streamUrl: HttpUrl): Boolean = true
 
     override fun poll(streamUrl: HttpUrl, onResult: (MetadataResult) -> Unit) {
@@ -64,6 +66,19 @@ class IcecastProvider : MetadataProvider {
 
             val title = rawTitle.trim()
             if (title.isEmpty()) return@fetchBody
+
+            val hyphenParts = title.split(" - ")
+            val lastPart = hyphenParts.lastOrNull()?.trim() ?: ""
+            if (hyphenParts.size >= 3 && isrcPattern.matches(lastPart)) {
+                val cleanParts = hyphenParts.dropLast(1).map { it.trim() }
+                val isrcTitle = MetadataTextUtils.cleanMetadataString(cleanParts.firstOrNull() ?: "")
+                val isrcArtist = MetadataTextUtils.cleanMetadataString(cleanParts.drop(1).joinToString(" - "))
+                if (isrcTitle.isNotEmpty()) {
+                    onResult(MetadataResult(isrcArtist, isrcTitle))
+                    return@fetchBody
+                }
+            }
+
             val (parsedArtist, parsedTitle) = MetadataTextUtils.splitArtistTitle(title)
             val resolvedTitle = parsedTitle.ifEmpty { MetadataTextUtils.cleanMetadataString(title) }
             onResult(MetadataResult(parsedArtist, resolvedTitle))
