@@ -64,7 +64,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
     ) {
-        itemsIndexed(stations, key = { _, station -> station.id.toString() }) { index, station ->
+        itemsIndexed(stations, key = { index, _ -> index }) { index, station ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
