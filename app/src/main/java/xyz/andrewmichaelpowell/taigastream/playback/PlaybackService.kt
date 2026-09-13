@@ -135,6 +135,13 @@ class PlaybackService : MediaSessionService() {
         super.onDestroy()
     }
 
+    /** The title to show before real metadata arrives (or when a stream never provides any):
+     * the station's own name, falling back to "Stream N" only if it has none. */
+    private fun fallbackTitle(slot: Int): String {
+        val name = repository.stations.value.getOrNull(slot - 1)?.name?.trim().orEmpty()
+        return name.ifEmpty { getString(R.string.stream_title, slot) }
+    }
+
     private fun playSlot(index: Int) {
         val current = NowPlaying.state.value
         if (player.isPlaying && current.currentStream == index + 1) {
@@ -149,7 +156,7 @@ class PlaybackService : MediaSessionService() {
         currentStreamUrl = station.url.toHttpUrlOrNull()
 
         val initialMetadata = MediaMetadata.Builder()
-            .setTitle(getString(R.string.stream_title, index + 1))
+            .setTitle(fallbackTitle(index + 1))
             .setArtist(getString(R.string.app_name))
             .build()
         player.setMediaItem(MediaItem.Builder().setUri(station.url).setMediaMetadata(initialMetadata).build())
@@ -246,7 +253,7 @@ class PlaybackService : MediaSessionService() {
             apiMetadataActive = true
 
             val resolvedArtist = result.artist.ifEmpty { getString(R.string.app_name) }
-            val resolvedTitle = result.title.ifEmpty { getString(R.string.stream_title, slot) }
+            val resolvedTitle = result.title.ifEmpty { fallbackTitle(slot) }
 
             NowPlaying.update { it.copy(artist = resolvedArtist, title = resolvedTitle) }
             updateSessionMetadata(resolvedArtist, resolvedTitle, NowPlaying.state.value.artwork)
@@ -266,7 +273,7 @@ class PlaybackService : MediaSessionService() {
         val state = NowPlaying.state.value
         updateSessionMetadata(
             state.artist.ifEmpty { getString(R.string.app_name) },
-            state.title.ifEmpty { getString(R.string.stream_title, state.currentStream) },
+            state.title.ifEmpty { fallbackTitle(state.currentStream) },
             bitmap,
         )
     }
