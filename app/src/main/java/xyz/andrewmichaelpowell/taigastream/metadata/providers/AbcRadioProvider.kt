@@ -13,21 +13,26 @@ class AbcRadioProvider : MetadataProvider {
     override val pollInterval: Long = 15
 
     private fun stationCode(streamUrl: HttpUrl): String? {
-        val host = streamUrl.host
         val segments = streamUrl.pathSegments
-        return if (host.contains("akamaized.net")) {
-            val liveIndex = segments.indexOf("live")
-            if (liveIndex >= 0 && segments.size > liveIndex + 2) segments[liveIndex + 2] else null
-        } else {
-            segments.lastOrNull { it.isNotEmpty() }?.substringBefore(".")
+        val liveIndex = segments.indexOf("live")
+        if (liveIndex >= 0) {
+            for (offset in listOf(1, 2)) {
+                val index = liveIndex + offset
+                if (index < segments.size) {
+                    val candidate = segments[index]
+                    if (STATION_CODE_TO_API.containsKey(candidate)) return candidate
+                }
+            }
         }
+        val last = segments.lastOrNull { it.isNotEmpty() }?.substringBefore(".")
+        if (last != null && STATION_CODE_TO_API.containsKey(last)) return last
+        return null
     }
 
     override fun matches(streamUrl: HttpUrl): Boolean {
         val host = streamUrl.host
         if (SLUG_HOSTS.any { host.contains(it) }) {
-            val code = stationCode(streamUrl) ?: return false
-            return STATION_CODE_TO_API.containsKey(code)
+            return stationCode(streamUrl) != null
         }
         val s = streamUrl.toString()
         return SORTED_KEYS.any { s.contains(it) }
