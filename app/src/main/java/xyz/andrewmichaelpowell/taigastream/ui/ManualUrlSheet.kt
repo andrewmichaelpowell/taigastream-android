@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import xyz.andrewmichaelpowell.taigastream.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +38,7 @@ fun ManualUrlSheet(
     var name by remember { mutableStateOf(initialName) }
     var url by remember { mutableStateOf(initialUrl) }
     val sheetState = rememberModalBottomSheetState()
+    val isValidUrl = url.trim().toHttpUrlOrNull() != null
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -62,7 +64,7 @@ fun ManualUrlSheet(
             )
             OptionButton(
                 text = stringResource(R.string.save),
-                enabled = url.isNotBlank(),
+                enabled = isValidUrl,
                 onClick = { onSave(name.trim(), url.trim()) },
             )
             OptionButton(text = stringResource(R.string.cancel), onClick = onDismiss)
