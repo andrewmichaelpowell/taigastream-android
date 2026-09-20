@@ -1,4 +1,4 @@
-//  Taiga Stream
+//  Taiga Stream (Android)
 //  github.com/andrewmichaelpowell
 
 package xyz.andrewmichaelpowell.taigastream.ui.theme

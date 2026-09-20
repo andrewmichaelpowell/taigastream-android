@@ -10,12 +10,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
 import android.media.AudioManager
 import android.os.Handler
 import android.os.Looper
-import androidx.core.content.ContextCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -43,13 +40,14 @@ import xyz.andrewmichaelpowell.taigastream.MainActivity
 import xyz.andrewmichaelpowell.taigastream.R
 import xyz.andrewmichaelpowell.taigastream.StationRepository
 import xyz.andrewmichaelpowell.taigastream.metadata.ArtworkFetcher
+import xyz.andrewmichaelpowell.taigastream.metadata.FaviconArtwork
 import xyz.andrewmichaelpowell.taigastream.metadata.IcyMetadataParser
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProvider
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProviders
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
+import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.IcecastProvider
 import kotlin.time.Duration.Companion.milliseconds
-import androidx.core.graphics.createBitmap
 
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 class PlaybackService : MediaSessionService() {
@@ -66,6 +64,11 @@ class PlaybackService : MediaSessionService() {
     private var icyEnabled = false
     private var apiMetadataActive = false
     private var lastResultKey = ""
+
+    private var hasRealArtwork = false
+    private var artworkRequestId = 0
+    private var fallbackRequestId = 0
+    private val faviconArtworkCache = mutableMapOf<String, Bitmap>()
 
     private val becomingNoisyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -135,8 +138,6 @@ class PlaybackService : MediaSessionService() {
         super.onDestroy()
     }
 
-    /** The title to show before real metadata arrives (or when a stream never provides any):
-     * the station's own name, falling back to "Stream N" only if it has none. */
     private fun fallbackTitle(slot: Int): String {
         val name = repository.stations.value.getOrNull(slot - 1)?.name?.trim().orEmpty()
         return name.ifEmpty { getString(R.string.stream_title, slot) }
@@ -154,6 +155,9 @@ class PlaybackService : MediaSessionService() {
 
         stopMetadataPolling()
         currentStreamUrl = station.url.toHttpUrlOrNull()
+        hasRealArtwork = false
+        artworkRequestId++
+        fallbackRequestId++
 
         val initialMetadata = MediaMetadata.Builder()
             .setTitle(fallbackTitle(index + 1))
@@ -165,7 +169,7 @@ class PlaybackService : MediaSessionService() {
         NowPlaying.update {
             NowPlayingState(isPlaying = false, currentStream = index + 1, artist = "", title = "", artwork = null)
         }
-        applyArtworkBitmap(appIconBitmap())
+        setFallbackArtwork()
 
         player.play()
     }
@@ -254,6 +258,7 @@ class PlaybackService : MediaSessionService() {
 
             val resolvedArtist = result.artist.ifEmpty { getString(R.string.app_name) }
             val resolvedTitle = result.title.ifEmpty { fallbackTitle(slot) }
+            val requestId = ++artworkRequestId
 
             NowPlaying.update { it.copy(artist = resolvedArtist, title = resolvedTitle) }
             updateSessionMetadata(resolvedArtist, resolvedTitle, NowPlaying.state.value.artwork)
@@ -262,13 +267,66 @@ class PlaybackService : MediaSessionService() {
                 artist = resolvedArtist,
                 title = resolvedTitle,
                 artworkUrl = result.artworkUrl,
-                onFailure = { mainHandler.post { applyArtworkBitmap(appIconBitmap()) } },
-                onBitmap = { bitmap -> mainHandler.post { applyArtworkBitmap(bitmap) } },
+                onFailure = {
+                    mainHandler.post {
+                        if (artworkRequestId != requestId) return@post
+                        hasRealArtwork = false
+                        setFallbackArtwork()
+                    }
+                },
+                onBitmap = { bitmap ->
+                    mainHandler.post {
+                        if (artworkRequestId == requestId) applyArtworkBitmap(bitmap, isReal = true)
+                    }
+                },
             )
         }
     }
 
-    private fun applyArtworkBitmap(bitmap: Bitmap?) {
+    private fun setFallbackArtwork() {
+        if (hasRealArtwork) return
+        val requestId = ++fallbackRequestId
+        val slot = NowPlaying.state.value.currentStream
+        val faviconUrl = repository.stations.value.getOrNull(slot - 1)?.faviconUrl?.trim().orEmpty()
+        if (faviconUrl.isEmpty() || faviconUrl.toHttpUrlOrNull() == null) {
+            applyArtworkBitmap(appIconBitmap(), isReal = false)
+            return
+        }
+
+        faviconArtworkCache[faviconUrl]?.let {
+            applyArtworkBitmap(it, isReal = false)
+            return
+        }
+
+        applyArtworkBitmap(appIconBitmap(), isReal = false)
+
+        loadFaviconArtwork(faviconUrl) { composed ->
+            if (fallbackRequestId != requestId || hasRealArtwork) return@loadFaviconArtwork
+            applyArtworkBitmap(composed ?: appIconBitmap(), isReal = false)
+        }
+    }
+
+    private fun loadFaviconArtwork(url: String, onResult: (Bitmap?) -> Unit) {
+        NetworkClient.fetchBytes(
+            NetworkClient.get(url),
+            onFailure = { mainHandler.post { onResult(null) } },
+        ) { bytes ->
+            val composed = runCatching {
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.let { FaviconArtwork.render(it) }
+            }.getOrNull()
+            mainHandler.post {
+                if (composed != null) faviconArtworkCache[url] = composed
+                onResult(composed)
+            }
+        }
+    }
+
+    private fun applyArtworkBitmap(bitmap: Bitmap?, isReal: Boolean) {
+        if (isReal) {
+            hasRealArtwork = true
+        } else if (hasRealArtwork) {
+            return
+        }
         NowPlaying.update { it.copy(artwork = bitmap) }
         val state = NowPlaying.state.value
         updateSessionMetadata(
@@ -298,19 +356,7 @@ class PlaybackService : MediaSessionService() {
             stream.toByteArray()
         }
 
-    private fun appIconBitmap(): Bitmap? =
-        runCatching {
-            val drawable = ContextCompat.getDrawable(this, R.mipmap.ic_launcher)!!
-            val size = 512
-            createBitmap(size, size).also { bitmap ->
-                val canvas = Canvas(bitmap)
-                canvas.drawColor(Color.WHITE)
-                drawable.setBounds(0, 0, size, size)
-                drawable.draw(canvas)
-            }
-        }.getOrNull() ?: runCatching {
-            BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
-        }.getOrNull()
+    private fun appIconBitmap(): Bitmap? = FaviconArtwork.appIcon(this)
 
     companion object {
         const val ACTION_PLAY_SLOT = "xyz.andrewmichaelpowell.taigastream.action.PLAY_SLOT"

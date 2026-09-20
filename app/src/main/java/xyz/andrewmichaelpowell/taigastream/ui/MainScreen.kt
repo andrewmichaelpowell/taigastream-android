@@ -1,4 +1,4 @@
-//  Taiga Stream
+//  Taiga Stream (Android)
 //  github.com/andrewmichaelpowell
 
 package xyz.andrewmichaelpowell.taigastream.ui
@@ -73,7 +73,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                FaviconImage(station.faviconUrl, isConfigured = station.url.isNotEmpty())
+                FaviconImage(station.faviconUrl, isConfigured = station.url.isNotEmpty(), savedStationStyle = true)
                 StationRow(
                     station = station,
                     modifier = Modifier.weight(1f),
