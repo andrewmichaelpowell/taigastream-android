@@ -73,7 +73,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                FaviconImage(station.faviconUrl, isConfigured = station.url.isNotEmpty(), savedStationStyle = true)
+                FaviconImage(station.faviconUrl, isConfigured = station.url.isNotEmpty())
                 StationRow(
                     station = station,
                     modifier = Modifier.weight(1f),

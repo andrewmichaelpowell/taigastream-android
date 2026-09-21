@@ -37,20 +37,20 @@ fun FaviconImage(
     faviconUrl: String,
     isConfigured: Boolean,
     size: Dp = 36.dp,
-    savedStationStyle: Boolean = false,
 ) {
     val colors = LocalTaigaStreamColors.current
     val context = LocalContext.current
     var failed by remember(faviconUrl) { mutableStateOf(false) }
-    var transparent by remember(faviconUrl) { mutableStateOf(false) }
+    var treatment by remember(faviconUrl) { mutableStateOf<FaviconArtwork.Treatment?>(null) }
     val hasFavicon = faviconUrl.isNotEmpty() && !failed
-    val showsWhiteBackground = savedStationStyle && hasFavicon && transparent
+    val showsWhiteBackground = hasFavicon && treatment?.needsBackground == true
+    val showsInset = hasFavicon && treatment?.needsInset == true
     val shape = RoundedCornerShape(6.dp)
 
     Box(
         modifier = Modifier
             .size(size)
-            .then(if (savedStationStyle) Modifier.clip(shape) else Modifier)
+            .clip(shape)
             .then(if (showsWhiteBackground) Modifier.background(Color.White) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
@@ -60,16 +60,14 @@ fun FaviconImage(
                 contentDescription = null,
                 modifier = Modifier
                     .size(size)
-                    .then(if (showsWhiteBackground) Modifier.scale(FaviconArtwork.TRANSPARENT_ICON_INSET) else Modifier),
+                    .then(if (showsInset) Modifier.scale(FaviconArtwork.TRANSPARENT_ICON_INSET) else Modifier),
                 onSuccess = { state ->
-                    if (savedStationStyle) {
-                        transparent = FaviconArtwork.hasTransparency(state.result.image.toBitmap())
-                    }
+                    treatment = FaviconArtwork.treatment(state.result.image.toBitmap())
                 },
                 onError = { failed = true },
             )
         } else {
-            val appIcon = if (savedStationStyle && isConfigured) {
+            val appIcon = if (isConfigured) {
                 remember { FaviconArtwork.appIcon(context)?.asImageBitmap() }
             } else {
                 null
