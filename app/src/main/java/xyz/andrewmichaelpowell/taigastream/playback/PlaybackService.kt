@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory
 import android.media.AudioManager
 import android.os.Handler
 import android.os.Looper
+import androidx.core.graphics.scale
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -25,16 +26,28 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.extractor.metadata.icy.IcyInfo
+import androidx.media3.session.LibraryResult
+import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
-import java.io.ByteArrayOutputStream
+import androidx.media3.session.SessionError
+import com.google.common.collect.ImmutableList
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.SettableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import xyz.andrewmichaelpowell.taigastream.MainActivity
 import xyz.andrewmichaelpowell.taigastream.R
@@ -47,13 +60,16 @@ import xyz.andrewmichaelpowell.taigastream.metadata.MetadataProviders
 import xyz.andrewmichaelpowell.taigastream.metadata.MetadataResult
 import xyz.andrewmichaelpowell.taigastream.metadata.NetworkClient
 import xyz.andrewmichaelpowell.taigastream.metadata.providers.IcecastProvider
+import java.io.ByteArrayOutputStream
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.coroutines.resume
 import kotlin.time.Duration.Companion.milliseconds
 
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
-class PlaybackService : MediaSessionService() {
+class PlaybackService : MediaLibraryService() {
 
     private lateinit var player: ExoPlayer
-    private lateinit var mediaSession: MediaSession
+    private lateinit var mediaSession: MediaLibrarySession
     private lateinit var repository: StationRepository
     private val serviceScope = CoroutineScope(SupervisorJob())
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -69,6 +85,7 @@ class PlaybackService : MediaSessionService() {
     private var artworkRequestId = 0
     private var fallbackRequestId = 0
     private val faviconArtworkCache = mutableMapOf<String, Bitmap>()
+    private val browseArtworkCache = ConcurrentHashMap<String, ByteArray>()
 
     private val becomingNoisyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -106,16 +123,28 @@ class PlaybackService : MediaSessionService() {
             Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_IMMUTABLE,
         )
-        mediaSession = MediaSession.Builder(this, player)
-            .setCallback(sessionCallback)
+        mediaSession = MediaLibrarySession.Builder(this, player, sessionCallback)
             .setSessionActivity(sessionActivity)
             .build()
         addSession(mediaSession)
 
+        serviceScope.launch {
+            repository.stations
+                .map { stations -> stations.map { Triple(it.url, it.name, it.faviconUrl) } }
+                .distinctUntilChanged()
+                .drop(1)
+                .collect {
+                    mainHandler.post {
+                        mediaSession.notifyChildrenChanged(ROOT_ID, configuredSlots().size, null)
+                    }
+                }
+        }
+
         registerReceiver(becomingNoisyReceiver, IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY))
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession = mediaSession
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession =
+        mediaSession
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -150,8 +179,15 @@ class PlaybackService : MediaSessionService() {
             return
         }
 
-        val station = repository.stations.value.getOrNull(index) ?: return
-        if (station.url.isEmpty()) return
+        val mediaItem = prepareSlot(index) ?: return
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        player.play()
+    }
+
+    private fun prepareSlot(index: Int): MediaItem? {
+        val station = repository.stations.value.getOrNull(index) ?: return null
+        if (station.url.isEmpty()) return null
 
         stopMetadataPolling()
         currentStreamUrl = station.url.toHttpUrlOrNull()
@@ -159,22 +195,26 @@ class PlaybackService : MediaSessionService() {
         artworkRequestId++
         fallbackRequestId++
 
-        val initialMetadata = MediaMetadata.Builder()
-            .setTitle(fallbackTitle(index + 1))
-            .setArtist(getString(R.string.app_name))
-            .build()
-        player.setMediaItem(MediaItem.Builder().setUri(station.url).setMediaMetadata(initialMetadata).build())
-        player.prepare()
-
         NowPlaying.update {
             NowPlayingState(isPlaying = false, currentStream = index + 1, artist = "", title = "", artwork = null)
         }
         setFallbackArtwork()
 
-        player.play()
+        val initialMetadata = MediaMetadata.Builder()
+            .setTitle(fallbackTitle(index + 1))
+            .setArtist(getString(R.string.app_name))
+        NowPlaying.state.value.artwork?.let {
+            initialMetadata.setArtworkData(bitmapToBytes(it), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+        }
+
+        return MediaItem.Builder()
+            .setMediaId(slotMediaId(index))
+            .setUri(station.url)
+            .setMediaMetadata(initialMetadata.build())
+            .build()
     }
 
-    private val sessionCallback = object : MediaSession.Callback {
+    private val sessionCallback = object : MediaLibrarySession.Callback {
         override fun onConnect(
             session: MediaSession,
             controller: MediaSession.ControllerInfo,
@@ -186,12 +226,149 @@ class PlaybackService : MediaSessionService() {
                 .add(Player.COMMAND_GET_CURRENT_MEDIA_ITEM)
                 .add(Player.COMMAND_SET_MEDIA_ITEM)
                 .add(Player.COMMAND_CHANGE_MEDIA_ITEMS)
+                .add(Player.COMMAND_PREPARE)
+                .add(Player.COMMAND_GET_TIMELINE)
                 .build()
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session, controller)
                 .setAvailablePlayerCommands(playerCommands)
                 .build()
         }
+
+        override fun onGetLibraryRoot(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            val root = MediaItem.Builder()
+                .setMediaId(ROOT_ID)
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setTitle(getString(R.string.app_name))
+                        .setIsBrowsable(true)
+                        .setIsPlayable(false)
+                        .setMediaType(MediaMetadata.MEDIA_TYPE_FOLDER_RADIO_STATIONS)
+                        .build(),
+                )
+                .build()
+            return Futures.immediateFuture(LibraryResult.ofItem(root, params))
+        }
+
+        override fun onGetChildren(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            parentId: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+            if (parentId != ROOT_ID) {
+                return Futures.immediateFuture(LibraryResult.ofError(SessionError.ERROR_BAD_VALUE))
+            }
+            val future = SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
+            serviceScope.launch {
+                val items = configuredSlots().map { index ->
+                    async { browseItem(index) }
+                }.awaitAll()
+                val from = (page * pageSize).coerceIn(0, items.size)
+                val to = (from + pageSize).coerceIn(from, items.size)
+                future.set(LibraryResult.ofItemList(items.subList(from, to), params))
+            }
+            return future
+        }
+
+        override fun onGetItem(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            mediaId: String,
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            val index = slotIndex(mediaId)
+                ?: return Futures.immediateFuture(LibraryResult.ofError(SessionError.ERROR_BAD_VALUE))
+            val future = SettableFuture.create<LibraryResult<MediaItem>>()
+            serviceScope.launch { future.set(LibraryResult.ofItem(browseItem(index), null)) }
+            return future
+        }
+
+        override fun onSetMediaItems(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaItems: MutableList<MediaItem>,
+            startIndex: Int,
+            startPositionMs: Long,
+        ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+            val selected = mediaItems.getOrNull(startIndex.coerceAtLeast(0))
+            val index = slotIndex(selected?.mediaId)
+            val item = index?.let { prepareSlot(it) }
+                ?: return super.onSetMediaItems(mediaSession, controller, mediaItems, startIndex, startPositionMs)
+            return Futures.immediateFuture(
+                MediaSession.MediaItemsWithStartPosition(listOf(item), 0, C.TIME_UNSET),
+            )
+        }
+
+        override fun onAddMediaItems(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaItems: MutableList<MediaItem>,
+        ): ListenableFuture<MutableList<MediaItem>> {
+            val resolved = mediaItems.map { item ->
+                slotIndex(item.mediaId)?.let { prepareSlot(it) } ?: item
+            }
+            return Futures.immediateFuture(resolved.toMutableList())
+        }
     }
+
+    private fun configuredSlots(): List<Int> =
+        repository.stations.value.indices.filter { repository.stations.value[it].url.isNotEmpty() }
+
+    private suspend fun browseItem(index: Int): MediaItem {
+        val station = repository.stations.value[index]
+        val metadata = MediaMetadata.Builder()
+            .setTitle(fallbackTitle(index + 1))
+            .setSubtitle(getString(R.string.stream_title, index + 1))
+            .setIsBrowsable(false)
+            .setIsPlayable(true)
+            .setMediaType(MediaMetadata.MEDIA_TYPE_RADIO_STATION)
+        browseArtwork(station.faviconUrl.trim())?.let {
+            metadata.setArtworkData(it, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+        }
+        return MediaItem.Builder()
+            .setMediaId(slotMediaId(index))
+            .setMediaMetadata(metadata.build())
+            .build()
+    }
+
+    private suspend fun browseArtwork(faviconUrl: String): ByteArray? {
+        val key = faviconUrl.ifEmpty { APP_ICON_KEY }
+        browseArtworkCache[key]?.let { return it }
+        val source = if (faviconUrl.toHttpUrlOrNull() == null) {
+            appIconBitmap()
+        } else {
+            withTimeoutOrNull(BROWSE_ARTWORK_TIMEOUT_MS.milliseconds) { fetchFavicon(faviconUrl) }
+                ?.let { FaviconArtwork.render(it) }
+                ?: return null
+        } ?: return null
+        val bytes = bitmapToBytes(source.scale(BROWSE_ARTWORK_SIDE, BROWSE_ARTWORK_SIDE))
+        browseArtworkCache[key] = bytes
+        return bytes
+    }
+
+    private suspend fun fetchFavicon(url: String): Bitmap? = suspendCancellableCoroutine { continuation ->
+        NetworkClient.fetchBytes(
+            NetworkClient.get(url),
+            onFailure = { if (continuation.isActive) continuation.resume(null) },
+        ) { bytes ->
+            val bitmap = runCatching { BitmapFactory.decodeByteArray(bytes, 0, bytes.size) }.getOrNull()
+            if (continuation.isActive) continuation.resume(bitmap)
+        }
+    }
+
+    private fun slotMediaId(index: Int) = "$SLOT_ID_PREFIX${index + 1}"
+
+    private fun slotIndex(mediaId: String?): Int? =
+        mediaId?.removePrefix(SLOT_ID_PREFIX)
+            ?.takeIf { mediaId.startsWith(SLOT_ID_PREFIX) }
+            ?.toIntOrNull()
+            ?.minus(1)
+            ?.takeIf { it in repository.stations.value.indices && repository.stations.value[it].url.isNotEmpty() }
 
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -338,6 +515,7 @@ class PlaybackService : MediaSessionService() {
 
     private fun updateSessionMetadata(artist: String, title: String, artwork: Bitmap?) {
         val currentItem = player.currentMediaItem ?: return
+        if (currentItem.mediaId != slotMediaId(NowPlaying.state.value.currentStream - 1)) return
         val metadataBuilder = currentItem.mediaMetadata.buildUpon()
             .setTitle(title)
             .setArtist(artist)
@@ -362,6 +540,12 @@ class PlaybackService : MediaSessionService() {
         const val ACTION_PLAY_SLOT = "xyz.andrewmichaelpowell.taigastream.action.PLAY_SLOT"
         const val ACTION_STOP = "xyz.andrewmichaelpowell.taigastream.action.STOP"
         const val EXTRA_SLOT_INDEX = "slot_index"
+
+        private const val ROOT_ID = "root"
+        private const val SLOT_ID_PREFIX = "slot_"
+        private const val APP_ICON_KEY = "app_icon"
+        private const val BROWSE_ARTWORK_SIDE = 128
+        private const val BROWSE_ARTWORK_TIMEOUT_MS = 3000L
 
         fun playSlotIntent(context: Context, index: Int): Intent =
             Intent(context, PlaybackService::class.java)
