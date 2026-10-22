@@ -10,6 +10,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import xyz.andrewmichaelpowell.taigastream.R
@@ -116,9 +117,17 @@ object FaviconArtwork {
             val size = 512
             createBitmap(size, size).also { bitmap ->
                 val canvas = Canvas(bitmap)
-                canvas.drawColor(Color.WHITE)
-                drawable.setBounds(0, 0, size, size)
-                drawable.draw(canvas)
+                if (drawable is AdaptiveIconDrawable) {
+                    val inset = size / 4
+                    listOfNotNull(drawable.background, drawable.foreground).forEach { layer ->
+                        layer.setBounds(-inset, -inset, size + inset, size + inset)
+                        layer.draw(canvas)
+                    }
+                } else {
+                    canvas.drawColor(Color.WHITE)
+                    drawable.setBounds(0, 0, size, size)
+                    drawable.draw(canvas)
+                }
             }
         }.getOrNull() ?: runCatching {
             BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
