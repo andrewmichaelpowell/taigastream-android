@@ -182,7 +182,7 @@ private fun PlayButton(
     onClick: () -> Unit,
 ) {
     val colors = LocalTaigaStreamColors.current
-    val containerColor = if (isActive) colors.mint else colors.secondarySystemBackground
+    val containerColor = if (isActive) colors.green else colors.secondarySystemBackground
 
     Surface(
         onClick = onClick,

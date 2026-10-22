@@ -100,7 +100,7 @@ fun TaigaTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            cursorColor = colors.mint,
+            cursorColor = colors.green,
             focusedTextColor = colors.label,
             unfocusedTextColor = colors.label,
             focusedLeadingIconColor = colors.tertiaryLabel,

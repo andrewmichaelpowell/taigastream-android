@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val MintLight = Color(0xFF00C7BE)
-val MintDark = Color(0xFF66D4CF)
+val GreenLight = Color(0xFF5A783C)
+val GreenDark = Color(0xFF5A783C)
 val SecondarySystemBackgroundLight = Color(0xFFEFEFF4)
 val SecondarySystemBackgroundDark = Color(0xFF1C1C1E)
 val LabelLight = Color(0xFF000000)
@@ -23,7 +23,7 @@ val QuaternaryLabelLight = Color(0xFFC7C7CC)
 val QuaternaryLabelDark = Color(0xFF48484A)
 
 data class TaigaStreamColors(
-    val mint: Color,
+    val green: Color,
     val secondarySystemBackground: Color,
     val label: Color,
     val tertiaryLabel: Color,
@@ -32,7 +32,7 @@ data class TaigaStreamColors(
 
 val LocalTaigaStreamColors = compositionLocalOf {
     TaigaStreamColors(
-        mint = MintLight,
+        green = GreenLight,
         secondarySystemBackground = SecondarySystemBackgroundLight,
         label = LabelLight,
         tertiaryLabel = TertiaryLabelLight,
@@ -41,13 +41,13 @@ val LocalTaigaStreamColors = compositionLocalOf {
 }
 
 private val LightColors = lightColorScheme(
-    primary = MintLight,
+    primary = GreenLight,
     surfaceVariant = SecondarySystemBackgroundLight,
     onSurface = LabelLight,
 )
 
 private val DarkColors = darkColorScheme(
-    primary = MintDark,
+    primary = GreenDark,
     surfaceVariant = SecondarySystemBackgroundDark,
     onSurface = LabelDark,
 )
@@ -58,7 +58,7 @@ fun TaigaStreamTheme(content: @Composable () -> Unit) {
     val colors = if (isDark) DarkColors else LightColors
     val customColors = if (isDark) {
         TaigaStreamColors(
-            mint = MintDark,
+            green = GreenDark,
             secondarySystemBackground = SecondarySystemBackgroundDark,
             label = LabelDark,
             tertiaryLabel = TertiaryLabelDark,
@@ -66,7 +66,7 @@ fun TaigaStreamTheme(content: @Composable () -> Unit) {
         )
     } else {
         TaigaStreamColors(
-            mint = MintLight,
+            green = GreenLight,
             secondarySystemBackground = SecondarySystemBackgroundLight,
             label = LabelLight,
             tertiaryLabel = TertiaryLabelLight,
