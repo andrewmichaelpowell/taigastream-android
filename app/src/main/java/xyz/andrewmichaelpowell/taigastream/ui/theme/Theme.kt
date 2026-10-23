@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val GreenLight = Color(0xFF5A783C)
-val GreenDark = Color(0xFF5A783C)
+val GreenLight = Color(0xFF547532)
+val GreenDark = Color(0xFF547532)
 val SecondarySystemBackgroundLight = Color(0xFFEFEFF4)
 val SecondarySystemBackgroundDark = Color(0xFF1C1C1E)
 val LabelLight = Color(0xFF000000)
