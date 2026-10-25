@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.andrewmichaelpowell.taigastream"
         minSdk = 29
         targetSdk = 37
-        versionCode = 10
-        versionName = "2026.10.22"
+        versionCode = 11
+        versionName = "2026.10.30"
     }
 
     buildFeatures {
