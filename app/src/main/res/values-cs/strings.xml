@@ -9,4 +9,5 @@
     <string name="stream_title">Stream %1$d</string>
     <string name="move_up">Přesunout nahoru</string>
     <string name="move_down">Přesunout dolů</string>
+    <string name="add_station">Přidat stanici</string>
 </resources>

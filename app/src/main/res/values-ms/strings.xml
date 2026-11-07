@@ -9,4 +9,5 @@
     <string name="stream_title">Strim %1$d</string>
     <string name="move_up">Alih ke atas</string>
     <string name="move_down">Alih ke bawah</string>
+    <string name="add_station">Tambah stesen</string>
 </resources>

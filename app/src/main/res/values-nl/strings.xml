@@ -9,4 +9,5 @@
     <string name="stream_title">Stream %1$d</string>
     <string name="move_up">Omhoog verplaatsen</string>
     <string name="move_down">Omlaag verplaatsen</string>
+    <string name="add_station">Zender toevoegen</string>
 </resources>

@@ -135,6 +135,7 @@ class PlaybackService : MediaLibraryService() {
                 .drop(1)
                 .collect {
                     mainHandler.post {
+                        syncCurrentStream()
                         mediaSession.notifyChildrenChanged(ROOT_ID, configuredSlots().size, null)
                     }
                 }
@@ -165,6 +166,27 @@ class PlaybackService : MediaLibraryService() {
         mediaSession.release()
         player.release()
         super.onDestroy()
+    }
+
+    // Re-points the current stream number at the playing station after the
+    // station list changes, or stops playback if that station was removed.
+    private fun syncCurrentStream() {
+        val playingUrl = currentStreamUrl ?: return
+        val currentStream = NowPlaying.state.value.currentStream
+        if (currentStream == 0) return
+        val index = repository.stations.value.indexOfFirst { it.url.toHttpUrlOrNull() == playingUrl }
+        if (index < 0) {
+            if (player.isPlaying) player.pause()
+            return
+        }
+        if (currentStream == index + 1) return
+        NowPlaying.update { it.copy(currentStream = index + 1) }
+        player.currentMediaItem?.let { item ->
+            player.replaceMediaItem(
+                player.currentMediaItemIndex,
+                item.buildUpon().setMediaId(slotMediaId(index)).build(),
+            )
+        }
     }
 
     private fun fallbackTitle(slot: Int): String {

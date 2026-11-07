@@ -9,4 +9,5 @@
     <string name="stream_title">Ström %1$d</string>
     <string name="move_up">Flytta upp</string>
     <string name="move_down">Flytta ner</string>
+    <string name="add_station">Lägg till kanal</string>
 </resources>

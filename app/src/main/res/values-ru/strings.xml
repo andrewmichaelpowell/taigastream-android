@@ -9,4 +9,5 @@
     <string name="stream_title">Поток %1$d</string>
     <string name="move_up">Переместить вверх</string>
     <string name="move_down">Переместить вниз</string>
+    <string name="add_station">Добавить станцию</string>
 </resources>

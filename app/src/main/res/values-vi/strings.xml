@@ -9,4 +9,5 @@
     <string name="stream_title">Luồng %1$d</string>
     <string name="move_up">Di chuyển lên</string>
     <string name="move_down">Di chuyển xuống</string>
+    <string name="add_station">Thêm đài</string>
 </resources>

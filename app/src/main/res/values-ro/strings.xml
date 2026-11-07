@@ -9,4 +9,5 @@
     <string name="stream_title">Flux %1$d</string>
     <string name="move_up">Mutare în sus</string>
     <string name="move_down">Mutare în jos</string>
+    <string name="add_station">Adaugă post</string>
 </resources>

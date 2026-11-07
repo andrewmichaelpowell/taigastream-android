@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,10 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import xyz.andrewmichaelpowell.taigastream.R
 import xyz.andrewmichaelpowell.taigastream.RadioStation
 import xyz.andrewmichaelpowell.taigastream.StationRepository
 import xyz.andrewmichaelpowell.taigastream.playback.NowPlaying
@@ -87,6 +90,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 )
             }
         }
+        item(key = "add") {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
+                    .heightIn(min = 56.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                AddButton(onClick = { sheet = SheetState.Options(stations.size) })
+            }
+        }
     }
 
     when (val current = sheet) {
@@ -95,8 +109,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
             StationOptionsSheet(
                 index = current.index,
                 hasStation = station.url.isNotEmpty(),
-                canMoveUp = current.index > 0,
-                canMoveDown = current.index < stations.size - 1,
+                canMoveUp = station.url.isNotEmpty() && current.index > 0,
+                canMoveDown = station.url.isNotEmpty() && current.index < stations.size - 1,
                 onDismiss = { sheet = SheetState.None },
                 onSearch = { sheet = SheetState.Search(current.index) },
                 onEnterUrl = { sheet = SheetState.ManualEntry(current.index, station.name, station.url) },
@@ -109,7 +123,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     sheet = SheetState.None
                 },
                 onClear = {
-                    scope.launch { repository.saveStation(RadioStation.EMPTY, current.index) }
+                    scope.launch { repository.clearStation(current.index) }
                     sheet = SheetState.None
                 },
             )
@@ -170,6 +184,25 @@ private fun StationRow(station: RadioStation, modifier: Modifier = Modifier, onC
             if (text.isNotEmpty()) {
                 Text(text, color = colors.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
+        }
+    }
+}
+
+@Composable
+private fun AddButton(onClick: () -> Unit) {
+    val colors = LocalTaigaStreamColors.current
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = colors.secondarySystemBackground,
+        modifier = Modifier.size(50.dp),
+    ) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Icon(
+                Icons.Filled.Add,
+                contentDescription = stringResource(R.string.add_station),
+                tint = colors.label,
+            )
         }
     }
 }

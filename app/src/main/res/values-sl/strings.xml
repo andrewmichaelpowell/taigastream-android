@@ -9,4 +9,5 @@
     <string name="stream_title">Tok %1$d</string>
     <string name="move_up">Premakni navzgor</string>
     <string name="move_down">Premakni navzdol</string>
+    <string name="add_station">Dodaj postajo</string>
 </resources>

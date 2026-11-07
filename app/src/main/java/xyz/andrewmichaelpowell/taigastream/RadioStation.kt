@@ -13,6 +13,5 @@ data class RadioStation(
 ) {
     companion object {
         val EMPTY = RadioStation(url = "", name = "", faviconUrl = "")
-        const val SLOT_COUNT = 32
     }
 }
