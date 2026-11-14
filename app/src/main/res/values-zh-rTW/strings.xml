@@ -7,7 +7,16 @@
     <string name="no_results">無結果</string>
     <string name="more_results">更多結果</string>
     <string name="stream_title">流 %1$d</string>
-    <string name="move_up">上移</string>
-    <string name="move_down">下移</string>
     <string name="add_station">新增電台</string>
+    <string name="radio">電台</string>
+    <string name="podcasts">Podcast</string>
+    <string name="episodes">單集</string>
+    <string name="add_podcast">新增 Podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">播放 Podcast %1$d</string>
+    <string name="pause">暫停</string>
+    <string name="time_left">剩餘 %1$s</string>
+    <string name="loading_episodes">正在載入單集…</string>
+    <string name="couldnt_load_episodes">無法載入單集</string>
+    <string name="no_episodes">無單集</string>
 </resources>

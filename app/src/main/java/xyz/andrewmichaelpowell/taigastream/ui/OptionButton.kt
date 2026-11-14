@@ -31,12 +31,12 @@ fun OptionButton(
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit,
 ) {
-    val colors = LocalTaigaStreamColors.current
     Surface(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        color = colors.secondarySystemBackground,
+        color = frostedColor(),
+        border = frostedBorder(),
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
@@ -94,9 +94,9 @@ fun TaigaTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = colors.secondarySystemBackground,
-            unfocusedContainerColor = colors.secondarySystemBackground,
-            disabledContainerColor = colors.secondarySystemBackground,
+            focusedContainerColor = frostedColor(),
+            unfocusedContainerColor = frostedColor(),
+            disabledContainerColor = frostedColor(),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,

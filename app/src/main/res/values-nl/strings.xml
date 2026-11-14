@@ -7,7 +7,16 @@
     <string name="no_results">Geen resultaten</string>
     <string name="more_results">Meer resultaten</string>
     <string name="stream_title">Stream %1$d</string>
-    <string name="move_up">Omhoog verplaatsen</string>
-    <string name="move_down">Omlaag verplaatsen</string>
     <string name="add_station">Zender toevoegen</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="episodes">Afleveringen</string>
+    <string name="add_podcast">Podcast toevoegen</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Speel podcast %1$d af</string>
+    <string name="pause">Pauzeer</string>
+    <string name="time_left">Nog %1$s</string>
+    <string name="loading_episodes">Afleveringen laden…</string>
+    <string name="couldnt_load_episodes">Kan afleveringen niet laden</string>
+    <string name="no_episodes">Geen afleveringen</string>
 </resources>

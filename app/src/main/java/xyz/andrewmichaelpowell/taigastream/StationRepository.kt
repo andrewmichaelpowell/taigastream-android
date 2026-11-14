@@ -80,12 +80,13 @@ class StationRepository private constructor(private val appContext: Context) {
 
     suspend fun clearStation(index: Int) = saveStation(RadioStation.EMPTY, index)
 
-    suspend fun moveStation(from: Int, to: Int) {
+    suspend fun reorder(ids: List<UUID>) {
         appContext.stationDataStore.edit { prefs ->
-            val current = readStations(prefs).toMutableList()
-            if (from !in current.indices || to !in current.indices) return@edit
-            current.add(to, current.removeAt(from))
-            writeStations(prefs, current)
+            val current = readStations(prefs)
+            val byId = current.associateBy { it.id }
+            val reordered = ids.mapNotNull { byId[it] }
+            if (reordered.size != current.size || reordered == current) return@edit
+            writeStations(prefs, reordered)
         }
     }
 

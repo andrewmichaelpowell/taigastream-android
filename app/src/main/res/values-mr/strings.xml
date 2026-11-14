@@ -7,7 +7,16 @@
     <string name="no_results">कोणतेही परिणाम नाहीत</string>
     <string name="more_results">अधिक परिणाम</string>
     <string name="stream_title">प्रवाह %1$d</string>
-    <string name="move_up">वर हलवा</string>
-    <string name="move_down">खाली हलवा</string>
     <string name="add_station">स्टेशन जोडा</string>
+    <string name="radio">रेडिओ</string>
+    <string name="podcasts">पॉडकास्ट</string>
+    <string name="episodes">भाग</string>
+    <string name="add_podcast">पॉडकास्ट जोडा</string>
+    <string name="podcast_title">पॉडकास्ट %1$d</string>
+    <string name="play_podcast">पॉडकास्ट %1$d प्ले करा</string>
+    <string name="pause">विराम</string>
+    <string name="time_left">%1$s शिल्लक</string>
+    <string name="loading_episodes">भाग लोड होत आहेत…</string>
+    <string name="couldnt_load_episodes">भाग लोड करता आले नाहीत</string>
+    <string name="no_episodes">कोणतेही भाग नाहीत</string>
 </resources>

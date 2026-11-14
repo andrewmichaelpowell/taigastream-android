@@ -7,7 +7,16 @@
     <string name="no_results">முடிவுகள் இல்லை</string>
     <string name="more_results">மேலும் முடிவுகள்</string>
     <string name="stream_title">ஓடை %1$d</string>
-    <string name="move_up">மேலே நகர்த்து</string>
-    <string name="move_down">கீழே நகர்த்து</string>
     <string name="add_station">நிலையத்தைச் சேர்</string>
+    <string name="radio">வானொலி</string>
+    <string name="podcasts">பாட்காஸ்ட்கள்</string>
+    <string name="episodes">அத்தியாயங்கள்</string>
+    <string name="add_podcast">பாட்காஸ்ட்டைச் சேர்</string>
+    <string name="podcast_title">பாட்காஸ்ட் %1$d</string>
+    <string name="play_podcast">பாட்காஸ்ட் %1$d ஐ இயக்கு</string>
+    <string name="pause">இடைநிறுத்து</string>
+    <string name="time_left">%1$s மீதம்</string>
+    <string name="loading_episodes">அத்தியாயங்கள் ஏற்றப்படுகின்றன…</string>
+    <string name="couldnt_load_episodes">அத்தியாயங்களை ஏற்ற முடியவில்லை</string>
+    <string name="no_episodes">அத்தியாயங்கள் இல்லை</string>
 </resources>

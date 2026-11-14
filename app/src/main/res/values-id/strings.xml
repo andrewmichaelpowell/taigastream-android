@@ -7,7 +7,16 @@
     <string name="no_results">Tidak ada hasil</string>
     <string name="more_results">Hasil lainnya</string>
     <string name="stream_title">Aliran %1$d</string>
-    <string name="move_up">Pindahkan ke atas</string>
-    <string name="move_down">Pindahkan ke bawah</string>
     <string name="add_station">Tambah stasiun</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcast</string>
+    <string name="episodes">Episode</string>
+    <string name="add_podcast">Tambah podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Putar podcast %1$d</string>
+    <string name="pause">Jeda</string>
+    <string name="time_left">Sisa %1$s</string>
+    <string name="loading_episodes">Memuat episode…</string>
+    <string name="couldnt_load_episodes">Tidak dapat memuat episode</string>
+    <string name="no_episodes">Tidak ada episode</string>
 </resources>

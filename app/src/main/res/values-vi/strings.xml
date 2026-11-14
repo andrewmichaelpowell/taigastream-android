@@ -7,7 +7,16 @@
     <string name="no_results">Không có kết quả</string>
     <string name="more_results">Thêm kết quả</string>
     <string name="stream_title">Luồng %1$d</string>
-    <string name="move_up">Di chuyển lên</string>
-    <string name="move_down">Di chuyển xuống</string>
     <string name="add_station">Thêm đài</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcast</string>
+    <string name="episodes">Tập</string>
+    <string name="add_podcast">Thêm podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Phát podcast %1$d</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="time_left">Còn %1$s</string>
+    <string name="loading_episodes">Đang tải các tập…</string>
+    <string name="couldnt_load_episodes">Không thể tải các tập</string>
+    <string name="no_episodes">Không có tập nào</string>
 </resources>

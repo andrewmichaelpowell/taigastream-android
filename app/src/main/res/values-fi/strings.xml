@@ -7,7 +7,16 @@
     <string name="no_results">Ei tuloksia</string>
     <string name="more_results">Lisää tuloksia</string>
     <string name="stream_title">Virta %1$d</string>
-    <string name="move_up">Siirrä ylös</string>
-    <string name="move_down">Siirrä alas</string>
     <string name="add_station">Lisää asema</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcastit</string>
+    <string name="episodes">Jaksot</string>
+    <string name="add_podcast">Lisää podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Toista podcast %1$d</string>
+    <string name="pause">Tauko</string>
+    <string name="time_left">%1$s jäljellä</string>
+    <string name="loading_episodes">Ladataan jaksoja…</string>
+    <string name="couldnt_load_episodes">Jaksojen lataaminen epäonnistui</string>
+    <string name="no_episodes">Ei jaksoja</string>
 </resources>

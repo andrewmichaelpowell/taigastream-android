@@ -7,7 +7,16 @@
     <string name="no_results">Niciun rezultat</string>
     <string name="more_results">Mai multe rezultate</string>
     <string name="stream_title">Flux %1$d</string>
-    <string name="move_up">Mutare în sus</string>
-    <string name="move_down">Mutare în jos</string>
     <string name="add_station">Adaugă post</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcasturi</string>
+    <string name="episodes">Episoade</string>
+    <string name="add_podcast">Adaugă podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Redă podcastul %1$d</string>
+    <string name="pause">Pauză</string>
+    <string name="time_left">Au mai rămas %1$s</string>
+    <string name="loading_episodes">Se încarcă episoadele…</string>
+    <string name="couldnt_load_episodes">Episoadele nu au putut fi încărcate</string>
+    <string name="no_episodes">Niciun episod</string>
 </resources>

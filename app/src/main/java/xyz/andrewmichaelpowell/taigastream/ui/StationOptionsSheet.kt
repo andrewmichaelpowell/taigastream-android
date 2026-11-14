@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -24,21 +23,16 @@ import xyz.andrewmichaelpowell.taigastream.R
 fun StationOptionsSheet(
     index: Int,
     hasStation: Boolean,
-    canMoveUp: Boolean,
-    canMoveDown: Boolean,
     onDismiss: () -> Unit,
     onSearch: () -> Unit,
     onEnterUrl: () -> Unit,
-    onMoveUp: () -> Unit,
-    onMoveDown: () -> Unit,
     onClear: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
 
-    ModalBottomSheet(
+    TaigaSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.background,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -52,8 +46,6 @@ fun StationOptionsSheet(
             )
             OptionButton(stringResource(R.string.search)) { onSearch() }
             OptionButton(stringResource(R.string.enter_url)) { onEnterUrl() }
-            if (canMoveUp) OptionButton(stringResource(R.string.move_up)) { onMoveUp() }
-            if (canMoveDown) OptionButton(stringResource(R.string.move_down)) { onMoveDown() }
             if (hasStation) {
                 OptionButton(stringResource(R.string.clear), destructive = true) { onClear() }
             }

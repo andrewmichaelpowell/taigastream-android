@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Radio
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -32,6 +32,7 @@ import xyz.andrewmichaelpowell.taigastream.R
 fun ManualUrlSheet(
     initialName: String,
     initialUrl: String,
+    nameIcon: ImageVector = Icons.Filled.Radio,
     onDismiss: () -> Unit,
     onSave: (name: String, url: String) -> Unit,
 ) {
@@ -40,10 +41,9 @@ fun ManualUrlSheet(
     val sheetState = rememberModalBottomSheetState()
     val isValidUrl = url.trim().toHttpUrlOrNull() != null
 
-    ModalBottomSheet(
+    TaigaSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.background,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -54,7 +54,7 @@ fun ManualUrlSheet(
                 value = name,
                 onValueChange = { name = it },
                 placeholder = "Name",
-                leadingIcon = { Icon(Icons.Filled.Radio, contentDescription = null) },
+                leadingIcon = { Icon(nameIcon, contentDescription = null) },
             )
             TaigaTextField(
                 value = url,

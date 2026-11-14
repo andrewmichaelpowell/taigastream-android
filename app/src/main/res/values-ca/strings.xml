@@ -7,7 +7,16 @@
     <string name="no_results">Sense resultats</string>
     <string name="more_results">Més resultats</string>
     <string name="stream_title">Flux %1$d</string>
-    <string name="move_up">Mou amunt</string>
-    <string name="move_down">Mou avall</string>
     <string name="add_station">Afegeix una emissora</string>
+    <string name="radio">Ràdio</string>
+    <string name="podcasts">Pòdcasts</string>
+    <string name="episodes">Episodis</string>
+    <string name="add_podcast">Afegeix un pòdcast</string>
+    <string name="podcast_title">Pòdcast %1$d</string>
+    <string name="play_podcast">Reprodueix el pòdcast %1$d</string>
+    <string name="pause">Pausa</string>
+    <string name="time_left">Queden %1$s</string>
+    <string name="loading_episodes">S\'estan carregant els episodis…</string>
+    <string name="couldnt_load_episodes">No s\'han pogut carregar els episodis</string>
+    <string name="no_episodes">Sense episodis</string>
 </resources>

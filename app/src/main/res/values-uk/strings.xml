@@ -7,7 +7,16 @@
     <string name="no_results">Немає результатів</string>
     <string name="more_results">Більше результатів</string>
     <string name="stream_title">Потік %1$d</string>
-    <string name="move_up">Перемістити вгору</string>
-    <string name="move_down">Перемістити вниз</string>
     <string name="add_station">Додати станцію</string>
+    <string name="radio">Радіо</string>
+    <string name="podcasts">Подкасти</string>
+    <string name="episodes">Випуски</string>
+    <string name="add_podcast">Додати подкаст</string>
+    <string name="podcast_title">Подкаст %1$d</string>
+    <string name="play_podcast">Відтворити подкаст %1$d</string>
+    <string name="pause">Пауза</string>
+    <string name="time_left">Залишилося %1$s</string>
+    <string name="loading_episodes">Завантаження випусків…</string>
+    <string name="couldnt_load_episodes">Не вдалося завантажити випуски</string>
+    <string name="no_episodes">Немає випусків</string>
 </resources>

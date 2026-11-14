@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ fun FaviconImage(
     faviconUrl: String,
     isConfigured: Boolean,
     size: Dp = 36.dp,
+    fallbackIcon: ImageVector = Icons.Filled.CellTower,
 ) {
     val colors = LocalTaigaStreamColors.current
     val context = LocalContext.current
@@ -80,7 +82,7 @@ fun FaviconImage(
                 )
             } else {
                 Icon(
-                    imageVector = Icons.Filled.CellTower,
+                    imageVector = fallbackIcon,
                     contentDescription = null,
                     tint = if (isConfigured) colors.label else colors.quaternaryLabel,
                     modifier = Modifier.size(size),

@@ -7,7 +7,16 @@
     <string name="no_results">אין תוצאות</string>
     <string name="more_results">תוצאות נוספות</string>
     <string name="stream_title">זרם %1$d</string>
-    <string name="move_up">הזז למעלה</string>
-    <string name="move_down">הזז למטה</string>
     <string name="add_station">הוסף תחנה</string>
+    <string name="radio">רדיו</string>
+    <string name="podcasts">פודקאסטים</string>
+    <string name="episodes">פרקים</string>
+    <string name="add_podcast">הוסף פודקאסט</string>
+    <string name="podcast_title">פודקאסט %1$d</string>
+    <string name="play_podcast">נגן פודקאסט %1$d</string>
+    <string name="pause">השהה</string>
+    <string name="time_left">נותרו %1$s</string>
+    <string name="loading_episodes">טוען פרקים…</string>
+    <string name="couldnt_load_episodes">לא ניתן לטעון פרקים</string>
+    <string name="no_episodes">אין פרקים</string>
 </resources>

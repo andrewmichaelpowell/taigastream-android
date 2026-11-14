@@ -7,7 +7,16 @@
     <string name="no_results">Нет результатов</string>
     <string name="more_results">Больше результатов</string>
     <string name="stream_title">Поток %1$d</string>
-    <string name="move_up">Переместить вверх</string>
-    <string name="move_down">Переместить вниз</string>
     <string name="add_station">Добавить станцию</string>
+    <string name="radio">Радио</string>
+    <string name="podcasts">Подкасты</string>
+    <string name="episodes">Выпуски</string>
+    <string name="add_podcast">Добавить подкаст</string>
+    <string name="podcast_title">Подкаст %1$d</string>
+    <string name="play_podcast">Воспроизвести подкаст %1$d</string>
+    <string name="pause">Пауза</string>
+    <string name="time_left">Осталось %1$s</string>
+    <string name="loading_episodes">Загрузка выпусков…</string>
+    <string name="couldnt_load_episodes">Не удалось загрузить выпуски</string>
+    <string name="no_episodes">Нет выпусков</string>
 </resources>

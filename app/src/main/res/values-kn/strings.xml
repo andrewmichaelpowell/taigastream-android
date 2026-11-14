@@ -7,7 +7,16 @@
     <string name="no_results">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ</string>
     <string name="more_results">ಇನ್ನಷ್ಟು ಫಲಿತಾಂಶಗಳು</string>
     <string name="stream_title">ಸ್ಟ್ರೀಮ್ %1$d</string>
-    <string name="move_up">ಮೇಲಕ್ಕೆ ಸರಿಸಿ</string>
-    <string name="move_down">ಕೆಳಕ್ಕೆ ಸರಿಸಿ</string>
     <string name="add_station">ಕೇಂದ್ರವನ್ನು ಸೇರಿಸಿ</string>
+    <string name="radio">ರೇಡಿಯೋ</string>
+    <string name="podcasts">ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್‌ಗಳು</string>
+    <string name="episodes">ಸಂಚಿಕೆಗಳು</string>
+    <string name="add_podcast">ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್ ಸೇರಿಸಿ</string>
+    <string name="podcast_title">ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್ %1$d</string>
+    <string name="play_podcast">ಪಾಡ್‌ಕ್ಯಾಸ್ಟ್ %1$d ಪ್ಲೇ ಮಾಡಿ</string>
+    <string name="pause">ವಿರಾಮ</string>
+    <string name="time_left">%1$s ಉಳಿದಿದೆ</string>
+    <string name="loading_episodes">ಸಂಚಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…</string>
+    <string name="couldnt_load_episodes">ಸಂಚಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</string>
+    <string name="no_episodes">ಯಾವುದೇ ಸಂಚಿಕೆಗಳಿಲ್ಲ</string>
 </resources>

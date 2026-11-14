@@ -7,7 +7,16 @@
     <string name="no_results">لا توجد نتائج</string>
     <string name="more_results">نتائج إضافية</string>
     <string name="stream_title">البث %1$d</string>
-    <string name="move_up">نقل للأعلى</string>
-    <string name="move_down">نقل للأسفل</string>
     <string name="add_station">إضافة محطة</string>
+    <string name="radio">راديو</string>
+    <string name="podcasts">البودكاست</string>
+    <string name="episodes">الحلقات</string>
+    <string name="add_podcast">إضافة بودكاست</string>
+    <string name="podcast_title">بودكاست %1$d</string>
+    <string name="play_podcast">تشغيل البودكاست %1$d</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="time_left">متبقٍ %1$s</string>
+    <string name="loading_episodes">جارٍ تحميل الحلقات…</string>
+    <string name="couldnt_load_episodes">تعذّر تحميل الحلقات</string>
+    <string name="no_episodes">لا توجد حلقات</string>
 </resources>

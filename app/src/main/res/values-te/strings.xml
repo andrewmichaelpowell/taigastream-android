@@ -7,7 +7,16 @@
     <string name="no_results">ఫలితాలు లేవు</string>
     <string name="more_results">మరిన్ని ఫలితాలు</string>
     <string name="stream_title">ప్రవాహం %1$d</string>
-    <string name="move_up">పైకి తరలించు</string>
-    <string name="move_down">కిందకి తరలించు</string>
     <string name="add_station">స్టేషన్‌ను జోడించండి</string>
+    <string name="radio">రేడియో</string>
+    <string name="podcasts">పాడ్‌కాస్ట్‌లు</string>
+    <string name="episodes">ఎపిసోడ్‌లు</string>
+    <string name="add_podcast">పాడ్‌కాస్ట్‌ను జోడించండి</string>
+    <string name="podcast_title">పాడ్‌కాస్ట్ %1$d</string>
+    <string name="play_podcast">పాడ్‌కాస్ట్ %1$d ప్లే చేయండి</string>
+    <string name="pause">పాజ్</string>
+    <string name="time_left">%1$s మిగిలి ఉంది</string>
+    <string name="loading_episodes">ఎపిసోడ్‌లు లోడ్ అవుతున్నాయి…</string>
+    <string name="couldnt_load_episodes">ఎపిసోడ్‌లను లోడ్ చేయడం సాధ్యపడలేదు</string>
+    <string name="no_episodes">ఎపిసోడ్‌లు లేవు</string>
 </resources>

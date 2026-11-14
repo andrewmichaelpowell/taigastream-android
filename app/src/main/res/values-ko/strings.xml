@@ -7,7 +7,16 @@
     <string name="no_results">결과 없음</string>
     <string name="more_results">추가 결과</string>
     <string name="stream_title">스트림 %1$d</string>
-    <string name="move_up">위로 이동</string>
-    <string name="move_down">아래로 이동</string>
     <string name="add_station">방송국 추가</string>
+    <string name="radio">라디오</string>
+    <string name="podcasts">팟캐스트</string>
+    <string name="episodes">에피소드</string>
+    <string name="add_podcast">팟캐스트 추가</string>
+    <string name="podcast_title">팟캐스트 %1$d</string>
+    <string name="play_podcast">팟캐스트 %1$d 재생</string>
+    <string name="pause">일시 정지</string>
+    <string name="time_left">%1$s 남음</string>
+    <string name="loading_episodes">에피소드 불러오는 중…</string>
+    <string name="couldnt_load_episodes">에피소드를 불러올 수 없음</string>
+    <string name="no_episodes">에피소드 없음</string>
 </resources>

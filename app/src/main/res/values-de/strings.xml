@@ -7,7 +7,16 @@
     <string name="no_results">Keine Ergebnisse</string>
     <string name="more_results">Weitere Ergebnisse</string>
     <string name="stream_title">Stream %1$d</string>
-    <string name="move_up">Nach oben verschieben</string>
-    <string name="move_down">Nach unten verschieben</string>
     <string name="add_station">Sender hinzufügen</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="episodes">Folgen</string>
+    <string name="add_podcast">Podcast hinzufügen</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Podcast %1$d abspielen</string>
+    <string name="pause">Pause</string>
+    <string name="time_left">Noch %1$s</string>
+    <string name="loading_episodes">Folgen werden geladen …</string>
+    <string name="couldnt_load_episodes">Folgen konnten nicht geladen werden</string>
+    <string name="no_episodes">Keine Folgen</string>
 </resources>

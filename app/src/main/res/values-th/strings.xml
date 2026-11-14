@@ -7,7 +7,16 @@
     <string name="no_results">ไม่พบผลลัพธ์</string>
     <string name="more_results">ผลลัพธ์เพิ่มเติม</string>
     <string name="stream_title">สตรีม %1$d</string>
-    <string name="move_up">ย้ายขึ้น</string>
-    <string name="move_down">ย้ายลง</string>
     <string name="add_station">เพิ่มสถานี</string>
+    <string name="radio">วิทยุ</string>
+    <string name="podcasts">พอดแคสต์</string>
+    <string name="episodes">ตอน</string>
+    <string name="add_podcast">เพิ่มพอดแคสต์</string>
+    <string name="podcast_title">พอดแคสต์ %1$d</string>
+    <string name="play_podcast">เล่นพอดแคสต์ %1$d</string>
+    <string name="pause">หยุดชั่วคราว</string>
+    <string name="time_left">เหลือ %1$s</string>
+    <string name="loading_episodes">กำลังโหลดตอน…</string>
+    <string name="couldnt_load_episodes">ไม่สามารถโหลดตอนได้</string>
+    <string name="no_episodes">ไม่มีตอน</string>
 </resources>

@@ -7,7 +7,16 @@
     <string name="no_results">Ingen resultater</string>
     <string name="more_results">Flere resultater</string>
     <string name="stream_title">Strøm %1$d</string>
-    <string name="move_up">Flyt op</string>
-    <string name="move_down">Flyt ned</string>
     <string name="add_station">Tilføj station</string>
+    <string name="radio">Radio</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="episodes">Afsnit</string>
+    <string name="add_podcast">Tilføj podcast</string>
+    <string name="podcast_title">Podcast %1$d</string>
+    <string name="play_podcast">Afspil podcast %1$d</string>
+    <string name="pause">Pause</string>
+    <string name="time_left">%1$s tilbage</string>
+    <string name="loading_episodes">Indlæser afsnit…</string>
+    <string name="couldnt_load_episodes">Kunne ikke indlæse afsnit</string>
+    <string name="no_episodes">Ingen afsnit</string>
 </resources>

@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.andrewmichaelpowell.taigastream"
         minSdk = 29
         targetSdk = 37
-        versionCode = 12
-        versionName = "2026.11.08"
+        versionCode = 13
+        versionName = "2026.11.16"
     }
 
     buildFeatures {
@@ -63,4 +63,6 @@ dependencies {
 
     implementation("io.coil-kt.coil3:coil-compose:3.6.3")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.6.3")
+
+    implementation("sh.calvin.reorderable:reorderable:2.4.3")
 }

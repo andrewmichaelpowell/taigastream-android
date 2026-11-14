@@ -7,7 +7,16 @@
     <string name="no_results">ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ</string>
     <string name="more_results">ਹੋਰ ਨਤੀਜੇ</string>
     <string name="stream_title">ਸਟ੍ਰੀਮ %1$d</string>
-    <string name="move_up">ਉੱਪਰ ਲਿਜਾਓ</string>
-    <string name="move_down">ਹੇਠਾਂ ਲਿਜਾਓ</string>
     <string name="add_station">ਸਟੇਸ਼ਨ ਜੋੜੋ</string>
+    <string name="radio">ਰੇਡੀਓ</string>
+    <string name="podcasts">ਪੌਡਕਾਸਟ</string>
+    <string name="episodes">ਐਪੀਸੋਡ</string>
+    <string name="add_podcast">ਪੌਡਕਾਸਟ ਜੋੜੋ</string>
+    <string name="podcast_title">ਪੌਡਕਾਸਟ %1$d</string>
+    <string name="play_podcast">ਪੌਡਕਾਸਟ %1$d ਚਲਾਓ</string>
+    <string name="pause">ਰੋਕੋ</string>
+    <string name="time_left">%1$s ਬਾਕੀ</string>
+    <string name="loading_episodes">ਐਪੀਸੋਡ ਲੋਡ ਹੋ ਰਹੇ ਹਨ…</string>
+    <string name="couldnt_load_episodes">ਐਪੀਸੋਡ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੇ</string>
+    <string name="no_episodes">ਕੋਈ ਐਪੀਸੋਡ ਨਹੀਂ</string>
 </resources>
