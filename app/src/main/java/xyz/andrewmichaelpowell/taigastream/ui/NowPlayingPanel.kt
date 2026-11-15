@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
@@ -116,7 +115,6 @@ private fun PanelLayout(
         shadowElevation = 6.dp,
         tonalElevation = 3.dp,
         modifier = modifier
-            .widthIn(max = 600.dp)
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
     ) {
