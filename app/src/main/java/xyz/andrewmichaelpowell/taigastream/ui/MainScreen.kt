@@ -33,7 +33,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -68,15 +70,24 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences(UI_PREFS, Context.MODE_PRIVATE) }
     var selectedTab by remember { mutableIntStateOf(prefs.getInt(SELECTED_TAB_KEY, 0)) }
-    val nowPlaying by NowPlaying.state.collectAsStateWithLifecycle()
-    val showsArtwork = nowPlaying.isPlaying || nowPlaying.isPodcastActive
+    val density = LocalDensity.current
+    var panelHeight by remember { mutableStateOf(0.dp) }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        NowPlayingBackground(artwork = if (showsArtwork) nowPlaying.artwork else null)
         Box(modifier = modifier.fillMaxSize()) {
+            val listPadding = PaddingValues(top = panelHeight + 8.dp, bottom = ChooserClearance)
             when (selectedTab) {
-                0 -> RadioPage()
-                else -> PodcastsPage(contentPadding = PaddingValues(top = 8.dp, bottom = ChooserClearance))
+                0 -> RadioPage(contentPadding = listPadding)
+                else -> PodcastsPage(contentPadding = listPadding)
+            }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .onSizeChanged { panelHeight = with(density) { it.height.toDp() } },
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                NowPlayingPanel(modifier = Modifier.padding(top = 8.dp))
             }
             PageChooser(
                 selectedIndex = selectedTab,
@@ -97,7 +108,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RadioPage() {
+private fun RadioPage(contentPadding: PaddingValues) {
     val context = LocalContext.current
     val repository = remember { StationRepository.get(context) }
     val stations by repository.stations.collectAsStateWithLifecycle()
@@ -118,7 +129,7 @@ private fun RadioPage() {
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = 8.dp, bottom = ChooserClearance),
+        contentPadding = contentPadding,
     ) {
         items(rows, key = { it.id }) { station ->
             val index = rows.indexOf(station)

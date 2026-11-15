@@ -19,4 +19,6 @@
     <string name="loading_episodes">Caricamento episodi…</string>
     <string name="couldnt_load_episodes">Impossibile caricare gli episodi</string>
     <string name="no_episodes">Nessun episodio</string>
+    <string name="play">Riproduci</string>
+    <string name="stop">Interrompi</string>
 </resources>

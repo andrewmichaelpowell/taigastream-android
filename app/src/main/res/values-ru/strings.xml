@@ -19,4 +19,6 @@
     <string name="loading_episodes">Загрузка выпусков…</string>
     <string name="couldnt_load_episodes">Не удалось загрузить выпуски</string>
     <string name="no_episodes">Нет выпусков</string>
+    <string name="play">Воспроизвести</string>
+    <string name="stop">Остановить</string>
 </resources>

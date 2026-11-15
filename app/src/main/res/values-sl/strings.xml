@@ -19,4 +19,6 @@
     <string name="loading_episodes">Nalaganje epizod…</string>
     <string name="couldnt_load_episodes">Epizod ni bilo mogoče naložiti</string>
     <string name="no_episodes">Ni epizod</string>
+    <string name="play">Predvajaj</string>
+    <string name="stop">Ustavi</string>
 </resources>

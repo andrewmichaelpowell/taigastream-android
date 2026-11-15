@@ -15,10 +15,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.graphics.scale
+import androidx.media3.cast.Cast
+import androidx.media3.cast.CastPlayer
+import androidx.media3.cast.RemoteCastPlayer
 import androidx.media3.common.AudioAttributes
+import androidx.media3.common.DeviceInfo
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.Metadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -76,7 +81,9 @@ import kotlin.time.Duration.Companion.milliseconds
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 class PlaybackService : MediaLibraryService() {
 
-    private lateinit var player: ExoPlayer
+    // The local ExoPlayer, wrapped in a CastPlayer that hands playback to a
+    // Chromecast while one is connected.
+    private lateinit var player: Player
     private lateinit var mediaSession: MediaLibrarySession
     private lateinit var repository: StationRepository
     private lateinit var podcasts: PodcastRepository
@@ -114,7 +121,7 @@ class PlaybackService : MediaLibraryService() {
             .setAllowCrossProtocolRedirects(true)
             .setDefaultRequestProperties(mapOf("Icy-Metadata" to "1"))
 
-        player = ExoPlayer.Builder(this)
+        val localPlayer = ExoPlayer.Builder(this)
             .setMediaSourceFactory(DefaultMediaSourceFactory(httpDataSourceFactory))
             .setSeekBackIncrementMs(SKIP_BACK_MS)
             .setSeekForwardIncrementMs(SKIP_FORWARD_MS)
@@ -126,8 +133,8 @@ class PlaybackService : MediaLibraryService() {
                     .build(),
                 true,
             )
-            addListener(playerListener)
         }
+        player = buildCastPlayer(localPlayer).apply { addListener(playerListener) }
 
         val sessionActivity = PendingIntent.getActivity(
             this,
@@ -188,8 +195,34 @@ class PlaybackService : MediaLibraryService() {
                 if (podcastId != null && episodeId != null) playEpisode(podcastId, episodeId)
             }
             ACTION_STOP -> player.pause()
+            ACTION_PLAY_FROM_SEARCH -> playFromSearch(intent.getStringExtra(EXTRA_QUERY))
+            ACTION_TOGGLE -> togglePlayback()
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun buildCastPlayer(localPlayer: ExoPlayer): Player =
+        runCatching {
+            Cast.getSingletonInstance(this).initialize()
+            CastPlayer.Builder(this)
+                .setLocalPlayer(localPlayer)
+                .setRemotePlayer(
+                    RemoteCastPlayer.Builder(this)
+                        .setSeekBackIncrementMs(SKIP_BACK_MS)
+                        .setSeekForwardIncrementMs(SKIP_FORWARD_MS)
+                        .build(),
+                )
+                .build()
+        }.getOrElse { localPlayer }
+
+    // A Chromecast reloads an item when it's replaced, which would restart the
+    // stream, so title and artwork updates only go to the local player.
+    private val isCasting: Boolean
+        get() = player.deviceInfo.playbackType == DeviceInfo.PLAYBACK_TYPE_REMOTE
+
+    private fun replaceCurrentItem(item: MediaItem) {
+        if (isCasting) return
+        player.replaceMediaItem(player.currentMediaItemIndex, item)
     }
 
     override fun onDestroy() {
@@ -218,16 +251,125 @@ class PlaybackService : MediaLibraryService() {
         if (currentStream == index + 1) return
         NowPlaying.update { it.copy(currentStream = index + 1) }
         player.currentMediaItem?.let { item ->
-            player.replaceMediaItem(
-                player.currentMediaItemIndex,
-                item.buildUpon().setMediaId(slotMediaId(index)).build(),
-            )
+            replaceCurrentItem(item.buildUpon().setMediaId(slotMediaId(index)).build())
         }
     }
 
     private fun fallbackTitle(slot: Int): String {
         val name = repository.stations.value.getOrNull(slot - 1)?.name?.trim().orEmpty()
         return name.ifEmpty { getString(R.string.stream_title, slot) }
+    }
+
+    private sealed interface SearchMatch {
+        data class Station(val index: Int) : SearchMatch
+        data class PodcastSlot(val index: Int) : SearchMatch
+    }
+
+    // Voice requests ("play … on Taiga Stream"). A name picks the station or
+    // podcast whose name matches best; with no name, whatever played last
+    // starts again, or else the first station.
+    private fun matchSearch(query: String?): SearchMatch? {
+        val wanted = query?.trim()?.lowercase().orEmpty()
+        val stations = repository.stations.value
+        val shows = podcasts.podcasts.value
+        if (wanted.isEmpty()) {
+            val state = NowPlaying.state.value
+            val podcastIndex = state.podcastId?.let { id -> shows.indexOfFirst { it.id == id } } ?: -1
+            return when {
+                podcastIndex >= 0 -> SearchMatch.PodcastSlot(podcastIndex)
+                stations.getOrNull(state.currentStream - 1)?.url?.isNotEmpty() == true ->
+                    SearchMatch.Station(state.currentStream - 1)
+                else -> configuredSlots().firstOrNull()?.let { SearchMatch.Station(it) }
+            }
+        }
+        fun score(name: String): Int {
+            val candidate = name.trim().lowercase()
+            return when {
+                candidate.isEmpty() -> 0
+                candidate == wanted -> 3
+                candidate.contains(wanted) -> 2
+                wanted.contains(candidate) -> 1
+                else -> 0
+            }
+        }
+        val bestStation = stations.indices
+            .filter { stations[it].url.isNotEmpty() }
+            .maxByOrNull { score(stations[it].name) }
+            ?.takeIf { score(stations[it].name) > 0 }
+        val bestPodcast = shows.indices
+            .filter { shows[it].feedUrl.isNotEmpty() }
+            .maxByOrNull { score(shows[it].name) }
+            ?.takeIf { score(shows[it].name) > 0 }
+        val stationScore = bestStation?.let { score(stations[it].name) } ?: 0
+        val podcastScore = bestPodcast?.let { score(shows[it].name) } ?: 0
+        return when {
+            bestStation != null && stationScore >= podcastScore -> SearchMatch.Station(bestStation)
+            bestPodcast != null -> SearchMatch.PodcastSlot(bestPodcast)
+            else -> null
+        }
+    }
+
+    // A voice request from the phone. Unlike the play buttons it never
+    // pauses: asking for what's already playing leaves it playing.
+    private fun playFromSearch(query: String?) {
+        val state = NowPlaying.state.value
+        when (val match = matchSearch(query)) {
+            is SearchMatch.Station -> {
+                val alreadyPlaying = !state.isPodcastActive && player.isPlaying &&
+                    state.currentStream == match.index + 1
+                if (!alreadyPlaying) playSlot(match.index)
+            }
+            is SearchMatch.PodcastSlot -> {
+                val podcast = podcasts.podcast(match.index)
+                val alreadyPlaying = state.podcastId == podcast.id && player.isPlaying
+                if (!alreadyPlaying) playPodcastSlot(match.index)
+            }
+            null -> Unit
+        }
+    }
+
+    // The same request through the media session (Android Auto and Google
+    // Assistant): hands back the item to play instead of starting it here.
+    private fun itemsForSearch(query: String): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+        val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
+        when (val match = matchSearch(query)) {
+            is SearchMatch.Station -> {
+                val item = prepareSlot(match.index)
+                if (item == null) {
+                    future.setException(IllegalArgumentException("No matching station"))
+                } else {
+                    future.set(MediaSession.MediaItemsWithStartPosition(listOf(item), 0, C.TIME_UNSET))
+                }
+            }
+            is SearchMatch.PodcastSlot -> {
+                val podcast = podcasts.podcast(match.index)
+                serviceScope.launch {
+                    val episode = podcasts.resolveEpisode(podcast)
+                    mainHandler.post {
+                        val prepared = episode?.let { preparePodcastItem(podcast, it) }
+                        if (prepared == null) {
+                            future.setException(IllegalArgumentException("No episode to play"))
+                        } else {
+                            future.set(
+                                MediaSession.MediaItemsWithStartPosition(listOf(prepared.first), 0, prepared.second),
+                            )
+                        }
+                    }
+                }
+            }
+            null -> future.setException(IllegalArgumentException("Nothing matches \"$query\""))
+        }
+        return future
+    }
+
+    private fun togglePlayback() {
+        val state = NowPlaying.state.value
+        if (state.isPodcastActive) {
+            if (!isEpisodeLoaded()) return
+            if (player.isPlaying) player.pause() else player.play()
+        } else if (state.currentStream > 0) {
+            playSlot(state.currentStream - 1)
+        }
     }
 
     private fun playSlot(index: Int) {
@@ -269,6 +411,7 @@ class PlaybackService : MediaLibraryService() {
         return MediaItem.Builder()
             .setMediaId(slotMediaId(index))
             .setUri(station.url)
+            .setMimeType(audioMimeType(station.url))
             .setMediaMetadata(initialMetadata.build())
             .build()
     }
@@ -363,6 +506,10 @@ class PlaybackService : MediaLibraryService() {
             startPositionMs: Long,
         ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
             val selected = mediaItems.getOrNull(startIndex.coerceAtLeast(0))
+            val searchQuery = selected?.requestMetadata?.searchQuery
+            if (selected != null && selected.mediaId.isEmpty() && searchQuery != null) {
+                return itemsForSearch(searchQuery)
+            }
             if (selected?.mediaId?.startsWith(EPISODE_ID_PREFIX) == true) {
                 val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
                 mainHandler.post {
@@ -619,7 +766,7 @@ class PlaybackService : MediaLibraryService() {
             metadataBuilder.setArtworkData(bitmapToBytes(artwork), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
         }
         val updatedItem = currentItem.buildUpon().setMediaMetadata(metadataBuilder.build()).build()
-        player.replaceMediaItem(player.currentMediaItemIndex, updatedItem)
+        replaceCurrentItem(updatedItem)
     }
 
     private fun bitmapToBytes(bitmap: Bitmap): ByteArray =
@@ -751,6 +898,7 @@ class PlaybackService : MediaLibraryService() {
         val item = MediaItem.Builder()
             .setMediaId(episodeMediaId(podcast.id, episode.id))
             .setUri(episode.audioUrl)
+            .setMimeType(audioMimeType(episode.audioUrl))
             .setMediaMetadata(metadata.build())
             .build()
         if (artworkUrl != null && cachedArtwork == null) loadPodcastArtwork(artworkUrl)
@@ -791,7 +939,7 @@ class PlaybackService : MediaLibraryService() {
                     .build(),
             )
             .build()
-        player.replaceMediaItem(player.currentMediaItemIndex, updated)
+        replaceCurrentItem(updated)
     }
 
     private val progressTick = object : Runnable {
@@ -957,10 +1105,28 @@ class PlaybackService : MediaLibraryService() {
     }
 
     companion object {
+        // A Chromecast needs a content type to choose its player. Local
+        // playback only uses it to spot HLS, which it would also spot from
+        // the extension.
+        private fun audioMimeType(url: String): String {
+            val path = url.substringBefore('?').substringBefore('#').lowercase()
+            return when {
+                path.endsWith(".m3u8") -> MimeTypes.APPLICATION_M3U8
+                path.endsWith(".m4a") || path.endsWith(".mp4") -> MimeTypes.AUDIO_MP4
+                path.endsWith(".aac") -> MimeTypes.AUDIO_AAC
+                path.endsWith(".ogg") || path.endsWith(".oga") -> MimeTypes.AUDIO_OGG
+                path.endsWith(".opus") -> MimeTypes.AUDIO_OPUS
+                else -> MimeTypes.AUDIO_MPEG
+            }
+        }
+
         const val ACTION_PLAY_SLOT = "xyz.andrewmichaelpowell.taigastream.action.PLAY_SLOT"
         const val ACTION_STOP = "xyz.andrewmichaelpowell.taigastream.action.STOP"
         const val ACTION_PLAY_PODCAST = "xyz.andrewmichaelpowell.taigastream.action.PLAY_PODCAST"
         const val ACTION_PLAY_EPISODE = "xyz.andrewmichaelpowell.taigastream.action.PLAY_EPISODE"
+        const val ACTION_TOGGLE = "xyz.andrewmichaelpowell.taigastream.action.TOGGLE"
+        const val ACTION_PLAY_FROM_SEARCH = "xyz.andrewmichaelpowell.taigastream.action.PLAY_FROM_SEARCH"
+        private const val EXTRA_QUERY = "query"
         const val EXTRA_SLOT_INDEX = "slot_index"
         const val EXTRA_PODCAST_ID = "podcast_id"
         const val EXTRA_EPISODE_ID = "episode_id"
@@ -995,6 +1161,18 @@ class PlaybackService : MediaLibraryService() {
                     .setAction(ACTION_PLAY_PODCAST)
                     .putExtra(EXTRA_SLOT_INDEX, index),
             )
+        }
+
+        fun playFromSearch(context: Context, query: String?) {
+            context.startService(
+                Intent(context, PlaybackService::class.java)
+                    .setAction(ACTION_PLAY_FROM_SEARCH)
+                    .putExtra(EXTRA_QUERY, query),
+            )
+        }
+
+        fun togglePlayback(context: Context) {
+            context.startService(Intent(context, PlaybackService::class.java).setAction(ACTION_TOGGLE))
         }
 
         fun startPlayEpisode(context: Context, podcastId: UUID, episodeId: String) {

@@ -19,4 +19,6 @@
     <string name="loading_episodes">Laster inn episoder …</string>
     <string name="couldnt_load_episodes">Kunne ikke laste inn episoder</string>
     <string name="no_episodes">Ingen episoder</string>
+    <string name="play">Spill av</string>
+    <string name="stop">Stopp</string>
 </resources>

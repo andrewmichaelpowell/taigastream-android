@@ -19,4 +19,6 @@
     <string name="loading_episodes">ਐਪੀਸੋਡ ਲੋਡ ਹੋ ਰਹੇ ਹਨ…</string>
     <string name="couldnt_load_episodes">ਐਪੀਸੋਡ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੇ</string>
     <string name="no_episodes">ਕੋਈ ਐਪੀਸੋਡ ਨਹੀਂ</string>
+    <string name="play">ਚਲਾਓ</string>
+    <string name="stop">ਰੋਕੋ</string>
 </resources>

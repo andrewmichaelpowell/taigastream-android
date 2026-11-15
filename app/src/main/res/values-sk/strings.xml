@@ -19,4 +19,6 @@
     <string name="loading_episodes">Načítavajú sa epizódy…</string>
     <string name="couldnt_load_episodes">Epizódy sa nepodarilo načítať</string>
     <string name="no_episodes">Žiadne epizódy</string>
+    <string name="play">Prehrať</string>
+    <string name="stop">Zastaviť</string>
 </resources>

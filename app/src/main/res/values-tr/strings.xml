@@ -19,4 +19,6 @@
     <string name="loading_episodes">Bölümler yükleniyor…</string>
     <string name="couldnt_load_episodes">Bölümler yüklenemedi</string>
     <string name="no_episodes">Bölüm yok</string>
+    <string name="play">Oynat</string>
+    <string name="stop">Durdur</string>
 </resources>

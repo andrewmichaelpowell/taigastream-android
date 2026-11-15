@@ -19,4 +19,6 @@
     <string name="loading_episodes">กำลังโหลดตอน…</string>
     <string name="couldnt_load_episodes">ไม่สามารถโหลดตอนได้</string>
     <string name="no_episodes">ไม่มีตอน</string>
+    <string name="play">เล่น</string>
+    <string name="stop">หยุด</string>
 </resources>

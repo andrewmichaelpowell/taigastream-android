@@ -19,4 +19,6 @@
     <string name="loading_episodes">পর্ব লোড হচ্ছে…</string>
     <string name="couldnt_load_episodes">পর্ব লোড করা যায়নি</string>
     <string name="no_episodes">কোনো পর্ব নেই</string>
+    <string name="play">চালান</string>
+    <string name="stop">থামান</string>
 </resources>

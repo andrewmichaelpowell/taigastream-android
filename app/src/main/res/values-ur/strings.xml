@@ -19,4 +19,6 @@
     <string name="loading_episodes">اقساط لوڈ ہو رہی ہیں…</string>
     <string name="couldnt_load_episodes">اقساط لوڈ نہیں ہو سکیں</string>
     <string name="no_episodes">کوئی قسط نہیں</string>
+    <string name="play">چلائیں</string>
+    <string name="stop">روکیں</string>
 </resources>

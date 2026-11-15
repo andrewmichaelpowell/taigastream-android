@@ -19,4 +19,6 @@
     <string name="loading_episodes">Wczytywanie odcinków…</string>
     <string name="couldnt_load_episodes">Nie udało się wczytać odcinków</string>
     <string name="no_episodes">Brak odcinków</string>
+    <string name="play">Odtwórz</string>
+    <string name="stop">Zatrzymaj</string>
 </resources>

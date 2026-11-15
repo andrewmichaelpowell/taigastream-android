@@ -19,4 +19,6 @@
     <string name="loading_episodes">Afleveringen laden…</string>
     <string name="couldnt_load_episodes">Kan afleveringen niet laden</string>
     <string name="no_episodes">Geen afleveringen</string>
+    <string name="play">Speel af</string>
+    <string name="stop">Stop</string>
 </resources>

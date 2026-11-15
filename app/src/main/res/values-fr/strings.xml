@@ -19,4 +19,6 @@
     <string name="loading_episodes">Chargement des épisodes…</string>
     <string name="couldnt_load_episodes">Impossible de charger les épisodes</string>
     <string name="no_episodes">Aucun épisode</string>
+    <string name="play">Lire</string>
+    <string name="stop">Arrêter</string>
 </resources>

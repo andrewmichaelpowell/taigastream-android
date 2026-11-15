@@ -19,4 +19,6 @@
     <string name="loading_episodes">Učitavanje epizoda…</string>
     <string name="couldnt_load_episodes">Epizode nije moguće učitati</string>
     <string name="no_episodes">Nema epizoda</string>
+    <string name="play">Reproduciraj</string>
+    <string name="stop">Zaustavi</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="loading_episodes">Ladataan jaksoja…</string>
     <string name="couldnt_load_episodes">Jaksojen lataaminen epäonnistui</string>
     <string name="no_episodes">Ei jaksoja</string>
+    <string name="play">Toista</string>
+    <string name="stop">Pysäytä</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="loading_episodes">Indlæser afsnit…</string>
     <string name="couldnt_load_episodes">Kunne ikke indlæse afsnit</string>
     <string name="no_episodes">Ingen afsnit</string>
+    <string name="play">Afspil</string>
+    <string name="stop">Stop</string>
 </resources>

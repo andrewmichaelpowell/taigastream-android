@@ -19,4 +19,6 @@
     <string name="loading_episodes">அத்தியாயங்கள் ஏற்றப்படுகின்றன…</string>
     <string name="couldnt_load_episodes">அத்தியாயங்களை ஏற்ற முடியவில்லை</string>
     <string name="no_episodes">அத்தியாயங்கள் இல்லை</string>
+    <string name="play">இயக்கு</string>
+    <string name="stop">நிறுத்து</string>
 </resources>

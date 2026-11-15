@@ -19,4 +19,6 @@
     <string name="loading_episodes">Memuatkan episod…</string>
     <string name="couldnt_load_episodes">Tidak dapat memuatkan episod</string>
     <string name="no_episodes">Tiada episod</string>
+    <string name="play">Main</string>
+    <string name="stop">Henti</string>
 </resources>

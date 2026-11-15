@@ -19,4 +19,6 @@
     <string name="loading_episodes">Đang tải các tập…</string>
     <string name="couldnt_load_episodes">Không thể tải các tập</string>
     <string name="no_episodes">Không có tập nào</string>
+    <string name="play">Phát</string>
+    <string name="stop">Dừng</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="loading_episodes">Se încarcă episoadele…</string>
     <string name="couldnt_load_episodes">Episoadele nu au putut fi încărcate</string>
     <string name="no_episodes">Niciun episod</string>
+    <string name="play">Redă</string>
+    <string name="stop">Oprește</string>
 </resources>

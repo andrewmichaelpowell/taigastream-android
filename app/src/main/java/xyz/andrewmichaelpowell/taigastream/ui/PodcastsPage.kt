@@ -242,8 +242,11 @@ private fun PodcastPlayButton(podcast: Podcast, number: Int) {
     }
     CircleButton(
         onClick = {
-            if (!isStarting) {
-                isStarting = !isPlaying
+            if (isPlaying) {
+                isStarting = false
+                PlaybackService.startPlayPodcast(context, number - 1)
+            } else if (!isStarting) {
+                isStarting = true
                 PlaybackService.startPlayPodcast(context, number - 1)
             }
         },

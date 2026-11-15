@@ -19,4 +19,6 @@
     <string name="loading_episodes">ఎపిసోడ్‌లు లోడ్ అవుతున్నాయి…</string>
     <string name="couldnt_load_episodes">ఎపిసోడ్‌లను లోడ్ చేయడం సాధ్యపడలేదు</string>
     <string name="no_episodes">ఎపిసోడ్‌లు లేవు</string>
+    <string name="play">ప్లే చేయి</string>
+    <string name="stop">ఆపు</string>
 </resources>

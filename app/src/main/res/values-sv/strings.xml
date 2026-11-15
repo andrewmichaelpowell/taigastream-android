@@ -19,4 +19,6 @@
     <string name="loading_episodes">Läser in avsnitt …</string>
     <string name="couldnt_load_episodes">Det gick inte att läsa in avsnitt</string>
     <string name="no_episodes">Inga avsnitt</string>
+    <string name="play">Spela upp</string>
+    <string name="stop">Stoppa</string>
 </resources>

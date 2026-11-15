@@ -19,4 +19,6 @@
     <string name="loading_episodes">Завантаження випусків…</string>
     <string name="couldnt_load_episodes">Не вдалося завантажити випуски</string>
     <string name="no_episodes">Немає випусків</string>
+    <string name="play">Відтворити</string>
+    <string name="stop">Зупинити</string>
 </resources>

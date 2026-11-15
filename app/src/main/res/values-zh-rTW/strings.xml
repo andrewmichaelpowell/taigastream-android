@@ -19,4 +19,6 @@
     <string name="loading_episodes">正在載入單集…</string>
     <string name="couldnt_load_episodes">無法載入單集</string>
     <string name="no_episodes">無單集</string>
+    <string name="play">播放</string>
+    <string name="stop">停止</string>
 </resources>

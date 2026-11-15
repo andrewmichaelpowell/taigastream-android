@@ -19,4 +19,6 @@
     <string name="loading_episodes">جارٍ تحميل الحلقات…</string>
     <string name="couldnt_load_episodes">تعذّر تحميل الحلقات</string>
     <string name="no_episodes">لا توجد حلقات</string>
+    <string name="play">تشغيل</string>
+    <string name="stop">إيقاف</string>
 </resources>

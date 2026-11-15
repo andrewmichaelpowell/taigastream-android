@@ -20,4 +20,6 @@
     <string name="loading_episodes">Loading episodes…</string>
     <string name="couldnt_load_episodes">Couldn\'t load episodes</string>
     <string name="no_episodes">No episodes</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
 </resources>

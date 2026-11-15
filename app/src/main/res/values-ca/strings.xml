@@ -19,4 +19,6 @@
     <string name="loading_episodes">S\'estan carregant els episodis…</string>
     <string name="couldnt_load_episodes">No s\'han pogut carregar els episodis</string>
     <string name="no_episodes">Sense episodis</string>
+    <string name="play">Reprodueix</string>
+    <string name="stop">Atura</string>
 </resources>

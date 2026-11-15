@@ -19,4 +19,6 @@
     <string name="loading_episodes">Φόρτωση επεισοδίων…</string>
     <string name="couldnt_load_episodes">Δεν ήταν δυνατή η φόρτωση επεισοδίων</string>
     <string name="no_episodes">Δεν υπάρχουν επεισόδια</string>
+    <string name="play">Αναπαραγωγή</string>
+    <string name="stop">Διακοπή</string>
 </resources>

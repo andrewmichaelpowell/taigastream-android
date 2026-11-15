@@ -19,4 +19,6 @@
     <string name="loading_episodes">ಸಂಚಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…</string>
     <string name="couldnt_load_episodes">ಸಂಚಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</string>
     <string name="no_episodes">ಯಾವುದೇ ಸಂಚಿಕೆಗಳಿಲ್ಲ</string>
+    <string name="play">ಪ್ಲೇ ಮಾಡಿ</string>
+    <string name="stop">ನಿಲ್ಲಿಸಿ</string>
 </resources>

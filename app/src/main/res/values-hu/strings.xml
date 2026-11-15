@@ -19,4 +19,6 @@
     <string name="loading_episodes">Epizódok betöltése…</string>
     <string name="couldnt_load_episodes">Nem sikerült betölteni az epizódokat</string>
     <string name="no_episodes">Nincs epizód</string>
+    <string name="play">Lejátszás</string>
+    <string name="stop">Leállítás</string>
 </resources>

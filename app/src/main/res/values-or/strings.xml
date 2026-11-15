@@ -19,4 +19,6 @@
     <string name="loading_episodes">ଏପିସୋଡ୍ ଲୋଡ୍ ହେଉଛି…</string>
     <string name="couldnt_load_episodes">ଏପିସୋଡ୍ ଲୋଡ୍ କରିହେଲା ନାହିଁ</string>
     <string name="no_episodes">କୌଣସି ଏପିସୋଡ୍ ନାହିଁ</string>
+    <string name="play">ଚଲାନ୍ତୁ</string>
+    <string name="stop">ବନ୍ଦ କରନ୍ତୁ</string>
 </resources>
