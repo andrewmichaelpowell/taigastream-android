@@ -60,7 +60,7 @@ fun frostedBorder(): BorderStroke =
 
 @Composable
 fun selectedIconGreen(): Color =
-    if (isSystemInDarkTheme()) Color(0xFF6FC7A0) else LocalTaigaStreamColors.current.green
+    if (isSystemInDarkTheme()) Color.White else LocalTaigaStreamColors.current.green
 
 @Composable
 fun CircleButton(
@@ -90,7 +90,6 @@ fun NowPlayingBackground(artwork: Bitmap?, modifier: Modifier = Modifier) {
         Crossfade(targetState = source, animationSpec = tween(500), label = "background") { bitmap ->
             if (bitmap != null) {
                 val supportsBlur = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                // Older Android can't blur, so a tiny copy stretched up stands in.
                 val image = remember(bitmap) {
                     (if (supportsBlur) bitmap else bitmap.scale(16, 16)).asImageBitmap()
                 }
