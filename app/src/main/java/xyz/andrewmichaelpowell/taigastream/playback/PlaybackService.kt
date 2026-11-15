@@ -81,8 +81,6 @@ import kotlin.time.Duration.Companion.milliseconds
 @androidx.annotation.OptIn(markerClass = [UnstableApi::class])
 class PlaybackService : MediaLibraryService() {
 
-    // The local ExoPlayer, wrapped in a CastPlayer that hands playback to a
-    // Chromecast while one is connected.
     private lateinit var player: Player
     private lateinit var mediaSession: MediaLibrarySession
     private lateinit var repository: StationRepository
@@ -98,6 +96,10 @@ class PlaybackService : MediaLibraryService() {
     private var lastResultKey = ""
 
     private var hasRealArtwork = false
+
+    private class StoppedSong(val title: String, val artist: String, val artwork: Bitmap?)
+
+    private var stoppedSong: StoppedSong? = null
     private var artworkRequestId = 0
     private var fallbackRequestId = 0
     private val faviconArtworkCache = mutableMapOf<String, Bitmap>()
@@ -215,8 +217,6 @@ class PlaybackService : MediaLibraryService() {
                 .build()
         }.getOrElse { localPlayer }
 
-    // A Chromecast reloads an item when it's replaced, which would restart the
-    // stream, so title and artwork updates only go to the local player.
     private val isCasting: Boolean
         get() = player.deviceInfo.playbackType == DeviceInfo.PLAYBACK_TYPE_REMOTE
 
@@ -237,8 +237,6 @@ class PlaybackService : MediaLibraryService() {
         super.onDestroy()
     }
 
-    // Re-points the current stream number at the playing station after the
-    // station list changes, or stops playback if that station was removed.
     private fun syncCurrentStream() {
         val playingUrl = currentStreamUrl ?: return
         val currentStream = NowPlaying.state.value.currentStream
@@ -265,9 +263,6 @@ class PlaybackService : MediaLibraryService() {
         data class PodcastSlot(val index: Int) : SearchMatch
     }
 
-    // Voice requests ("play … on Taiga Stream"). A name picks the station or
-    // podcast whose name matches best; with no name, whatever played last
-    // starts again, or else the first station.
     private fun matchSearch(query: String?): SearchMatch? {
         val wanted = query?.trim()?.lowercase().orEmpty()
         val stations = repository.stations.value
@@ -309,8 +304,6 @@ class PlaybackService : MediaLibraryService() {
         }
     }
 
-    // A voice request from the phone. Unlike the play buttons it never
-    // pauses: asking for what's already playing leaves it playing.
     private fun playFromSearch(query: String?) {
         val state = NowPlaying.state.value
         when (val match = matchSearch(query)) {
@@ -328,8 +321,6 @@ class PlaybackService : MediaLibraryService() {
         }
     }
 
-    // The same request through the media session (Android Auto and Google
-    // Assistant): hands back the item to play instead of starting it here.
     private fun itemsForSearch(query: String): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
         val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
         when (val match = matchSearch(query)) {
@@ -393,6 +384,7 @@ class PlaybackService : MediaLibraryService() {
         stopMetadataPolling()
         currentStreamUrl = station.url.toHttpUrlOrNull()
         hasRealArtwork = false
+        stoppedSong = null
         artworkRequestId++
         fallbackRequestId++
 
@@ -609,9 +601,28 @@ class PlaybackService : MediaLibraryService() {
                 return
             }
             if (isPlaying) {
+                stoppedSong?.let { song ->
+                    stoppedSong = null
+                    if (!hasRealArtwork) {
+                        NowPlaying.update { it.copy(title = song.title, artist = song.artist) }
+                        applyArtworkBitmap(song.artwork, isReal = true)
+                    }
+                }
                 currentStreamUrl?.let { startMetadataPolling(it) }
             } else {
                 stopMetadataPolling()
+                val state = NowPlaying.state.value
+                if (!player.playWhenReady && (hasRealArtwork || state.title.isNotEmpty())) {
+                    stoppedSong = StoppedSong(
+                        state.title,
+                        state.artist,
+                        state.artwork.takeIf { hasRealArtwork },
+                    )
+                    NowPlaying.update { it.copy(title = "", artist = "") }
+                    hasRealArtwork = false
+                    artworkRequestId++
+                    setFallbackArtwork()
+                }
             }
         }
 
@@ -1105,9 +1116,6 @@ class PlaybackService : MediaLibraryService() {
     }
 
     companion object {
-        // A Chromecast needs a content type to choose its player. Local
-        // playback only uses it to spot HLS, which it would also spot from
-        // the extension.
         private fun audioMimeType(url: String): String {
             val path = url.substringBefore('?').substringBefore('#').lowercase()
             return when {
