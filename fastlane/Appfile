@@ -1,0 +1,4 @@
+# Google Play listing text, uploaded with fastlane supply.
+# The service account key lives outside this repository.
+json_key_file("/Volumes/SanDisk/Repositories/keystore-repository/fastlane-515118-96a8f0ad7dd8.json")
+package_name("xyz.andrewmichaelpowell.taigastream")

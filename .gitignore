@@ -12,3 +12,7 @@ local.properties
 *.jks
 *.keystore
 keystore.properties
+
+# fastlane: listing images are managed in Play Console, not uploaded from here
+fastlane/metadata/android/*/images/
+fastlane/report.xml

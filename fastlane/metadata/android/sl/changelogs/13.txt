@@ -1,0 +1,1 @@
+Ta različica dodaja podporo za podcaste.
