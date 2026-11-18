@@ -1,1 +1,0 @@
-Den här versionen lägger till stöd för poddar.

@@ -1,1 +1,0 @@
-Această versiune adaugă suport pentru podcasturi.
