@@ -75,7 +75,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         Box(modifier = modifier.fillMaxSize()) {
-            val listPadding = PaddingValues(top = panelHeight + 8.dp, bottom = ChooserClearance)
+            val listPadding = PaddingValues(top = panelHeight + 13.dp, bottom = ChooserClearance)
             when (selectedTab) {
                 0 -> RadioPage(contentPadding = listPadding)
                 else -> PodcastsPage(contentPadding = listPadding)
